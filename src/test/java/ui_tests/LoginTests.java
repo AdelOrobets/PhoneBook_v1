@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import pages.ContactsPage;
 import pages.HomePage;
 import pages.LoginPage;
+import utils.HeaderMenuItem;
 
 import java.time.Duration;
 
@@ -27,7 +28,7 @@ public class LoginTests extends ApplicationManager {
         Assert.assertTrue(new ContactsPage(driver)
                 .isNoContactsTextPresent("No Contacts here!"));
 
-        new HomePage(driver).clickSignOutHeaderButton();
+        new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.SIGNOUT);
 
         loginPage.typeLoginForm(testUser);
         loginPage.closeAlert();
@@ -47,7 +48,7 @@ public class LoginTests extends ApplicationManager {
         Assert.assertTrue(new ContactsPage(driver)
                 .isNoContactsTextPresent("No Contacts here!"));
 
-        new HomePage(driver).clickSignOutHeaderButton();
+        new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.SIGNOUT);
 
         loginPage.typeLoginForm(new UserLombok(email, testUser.getPassword()));
         Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed());

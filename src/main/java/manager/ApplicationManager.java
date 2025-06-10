@@ -8,6 +8,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import pages.HomePage;
 import pages.LoginPage;
+import utils.HeaderMenuItem;
 
 import java.time.Duration;
 
@@ -26,8 +27,7 @@ public class ApplicationManager {
     }
 
     public void openLoginPage() {
-        new HomePage(driver).clickLoginHeaderLink();
-        loginPage = new LoginPage(driver);
+        loginPage = new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.LOGIN);
     }
 
     @BeforeMethod

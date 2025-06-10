@@ -1,16 +1,22 @@
 package ui_tests;
 
 import dto.UserLombok;
+import io.qameta.allure.*;
 import manager.ApplicationManager;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
 import pages.HomePage;
 import pages.LoginPage;
+import utils.HeaderMenuItem;
 
+@Feature("Registration")
 public class RegistrationTest extends ApplicationManager {
 
     @Test
+    @Story("Successful registration with valid data")
+    @Severity(SeverityLevel.BLOCKER)
+    @Owner("Adel Orobets")
     public void testSuccessfulRegistration() {
         loginPage.typeRegistrationForm(testUser);
         ContactsPage contactsPage = new ContactsPage(driver);
@@ -39,7 +45,7 @@ public class RegistrationTest extends ApplicationManager {
         Assert.assertTrue(new ContactsPage(driver)
                 .isNoContactsTextPresent("No Contacts here!"));
 
-        new HomePage(driver).clickSignOutHeaderButton();
+        new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.SIGNOUT);
         loginPage.typeRegistrationForm(testUser);
         loginPage.closeAlert();
         Assert.assertTrue(loginPage.isRegistrationErrorMessageDisplayed("Registration failed"));
