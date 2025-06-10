@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2' // Allure plugin
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
+    implementation 'org.testng:testng:7.11.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.13'
+
+    // Allure TestNG adapter
+    testImplementation 'io.qameta.allure:allure-testng:2.21.0'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    testCompileOnly 'org.projectlombok:lombok:1.18.28'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+}
+
+test {
+    useTestNG()
+}
+
+allure {
+    version = '2.25.0'
+    useTestNG {
+        version = '2.21.0'
+    }
+}
