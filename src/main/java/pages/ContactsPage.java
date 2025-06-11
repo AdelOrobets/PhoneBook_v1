@@ -19,21 +19,14 @@ public class ContactsPage extends BasePage {
     List<WebElement> contactsCards;
 
     @FindBy(xpath = "//button[contains(text(), 'Edit')]")
-    WebElement buttonEditContactButton;
+    WebElement buttonEditContact;
 
     @FindBy(xpath = "//button[contains(text(), 'Remove')]")
     WebElement buttonDeleteContact;
 
+
     public boolean isContactsPageDisplayed() {
         return isElementPresent(noContactsMsg) || (contactsCards != null && !contactsCards.isEmpty());
-    }
-
-    public boolean isNoContactsMessageDisplayed() {
-        return isElementPresent(noContactsMsg);
-    }
-
-    public boolean isNoContactsTextPresent(String expectedMessage) {
-        return isTextInElementPresent(noContactsMsg, expectedMessage);
     }
 
     public void deleteFirstContact() {
@@ -42,5 +35,4 @@ public class ContactsPage extends BasePage {
             buttonDeleteContact.click();
         }
     }
-
 }

@@ -29,13 +29,6 @@ public class ApplicationManager {
         return driver;
     }
 
-    public void createUniqueTestUser() {
-        String email = LoginPage.generateEmail(8);
-        String password = LoginPage.generatePassword(10);
-        testUser = new UserLombok(email, password);
-        System.out.println("Generated testUser: Email: " + email + ", Password: " + password);
-    }
-
     public void openLoginPage() {
         loginPage = new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.LOGIN);
     }
@@ -43,6 +36,7 @@ public class ApplicationManager {
     public void openAboutPage() {
         aboutPage = new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.ABOUT);
     }
+
 
     @BeforeMethod
     public void setUpTest() {

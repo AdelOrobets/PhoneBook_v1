@@ -4,91 +4,82 @@ import dto.UserLombok;
 import io.qameta.allure.*;
 import manager.ApplicationManager;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
 import pages.HomePage;
-import pages.LoginPage;
 import utils.HeaderMenuItem;
+import utils.TestDataFactory;
 
 @Feature("Registration")
 public class RegistrationTest extends ApplicationManager {
 
-    @BeforeMethod
-    public void prepareUser() {
-        createUniqueTestUser();
-        openLoginPage();
-    }
-
+    // Positive tests
     @Test
-    @Story("Successful registration with valid data")
-    @Severity(SeverityLevel.BLOCKER)
-    @Owner("Adel Orobets")
     public void testSuccessfulRegistration() {
-        loginPage.typeRegistrationForm(testUser);
-        ContactsPage contactsPage = new ContactsPage(driver);
-        Assert.assertTrue(contactsPage.isNoContactsMessageDisplayed(), "No Contacts here!");
+        UserLombok user = TestDataFactory.validUser();
+        openLoginPage();
+        loginPage.typeRegistrationForm(user);
+        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(),
+                "Registration failed");
     }
 
     // Negative helper
     private void registrationAndAssertFailure(UserLombok user) {
+        openLoginPage();
         loginPage.typeRegistrationForm(user);
-        loginPage.closeAlert();
-
-        boolean errorDisplayed = loginPage.isRegistrationErrorMessageDisplayed("Registration failed");
-        System.out.println("Error displayed: " + errorDisplayed);
-
-        if (!errorDisplayed) {
-            Assert.fail("BUG: Registration succeeded with invalid data: " + user.getUsername()
-                    + " / " + user.getPassword());
-        } else {
-            System.out.println("Test passed: Error message correctly displayed");
-        }
+        boolean alertAppeared = loginPage.closeAlert();
+        Assert.assertTrue(alertAppeared, "BUG: Expected Alert not displayed");
+        Assert.assertTrue(loginPage.errorMessageContains(loginPage.getErrorMsgRegistration(),
+                "Registration failed"));
     }
 
+    // Negative tests
     @Test
     public void testNegative_UserAlreadyExist() {
-        loginPage.typeRegistrationForm(testUser);
-        Assert.assertTrue(new ContactsPage(driver)
-                .isNoContactsTextPresent("No Contacts here!"));
-
-        new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.SIGNOUT);
-        loginPage.typeRegistrationForm(testUser);
-        loginPage.closeAlert();
-        Assert.assertTrue(loginPage.isRegistrationErrorMessageDisplayed("Registration failed"));
+        // create new user
+        UserLombok user = TestDataFactory.validUser();
+        openLoginPage();
+        loginPage.typeRegistrationForm(user);
+        // exit
+        new HomePage(getDriver()).clickHeaderMenuItem(HeaderMenuItem.LOGIN);
+        // re-registration
+        registrationAndAssertFailure(user);
     }
 
     @Test
     public void testNegative_emptyUsername() {
-        registrationAndAssertFailure(new UserLombok("", testUser.getPassword()));
+        UserLombok invalidUser = TestDataFactory.userWithoutEmail();
+        registrationAndAssertFailure(invalidUser);
     }
 
     @Test
     public void testNegative_emptyPassword() {
-        registrationAndAssertFailure(new UserLombok(testUser.getUsername(), ""));
+        UserLombok invalidUser = TestDataFactory.userWithoutPassword();
+        registrationAndAssertFailure(invalidUser);
     }
 
     @Test
     public void testNegative_invalidUsernameFormat() {
-        String email = LoginPage.generateInvalidEmailNoAtSymbol(10);
-        registrationAndAssertFailure(new UserLombok(email, testUser.getPassword()));
+        UserLombok invalidUser = TestDataFactory.invalidEmailNoAtSymbol();
+        registrationAndAssertFailure(invalidUser);
     }
 
     @Test
     public void testNegative_invalidUsernameDomain() {
-        String email = LoginPage.generateInvalidEmailNoDomain(10);
-        registrationAndAssertFailure(new UserLombok(email, testUser.getPassword()));
+        UserLombok invalidUser = TestDataFactory.invalidEmailNoDomain();
+        registrationAndAssertFailure(invalidUser);
     }
 
     @Test
     public void testNegative_invalidUsername_withSpace() {
-        registrationAndAssertFailure(new UserLombok(testUser.getUsername() + " ", testUser.getPassword()));
+        UserLombok invalidUser = TestDataFactory.invalidEmailWithSpace();
+        registrationAndAssertFailure(invalidUser);
     }
 
     @Test
     public void testNegative_invalidPasswordShort() {
-        String shortPwd = LoginPage.generatePassword(4);
-        registrationAndAssertFailure(new UserLombok(testUser.getUsername(), shortPwd));
+        UserLombok invalidUser = TestDataFactory.invalidPasswordTooShort();
+        registrationAndAssertFailure(invalidUser);
     }
 
     /**
@@ -99,22 +90,19 @@ public class RegistrationTest extends ApplicationManager {
      */
     @Test(description = "Negative test: password too long (>15) — expected to fail due to bug REG-2")
     public void testNegative_invalidPasswordLong() {
-        String longPwd = LoginPage.generatePassword(16);
-        System.out.println("Sending email = " + testUser.getUsername() + ", passwordLong = " + longPwd);
-        registrationAndAssertFailure(new UserLombok(testUser.getUsername(), longPwd));
+        UserLombok invalidUser = TestDataFactory.invalidPasswordTooLong();
+        registrationAndAssertFailure(invalidUser);
     }
 
     @Test
     public void testNegative_invalidPasswordNoDigit() {
-        String pwdNoDigit = LoginPage.generatePasswordInvalidNoDigit(8);
-        System.out.println("Sending email = " + testUser.getUsername() + ", passwordNoDigit = " + pwdNoDigit);
-        registrationAndAssertFailure(new UserLombok(testUser.getUsername(), pwdNoDigit));
+        UserLombok invalidUser = TestDataFactory.invalidPasswordNoDigit();
+        registrationAndAssertFailure(invalidUser);
     }
 
     @Test
     public void testNegative_invalidPasswordNoSymbol() {
-        String pwdNoSymbol = LoginPage.generatePasswordInvalidNoSymbol(9);
-        System.out.println("Sending email = " + testUser.getUsername() + ", passwordNoSymbol = " + pwdNoSymbol);
-        registrationAndAssertFailure(new UserLombok(testUser.getUsername(), pwdNoSymbol));
+        UserLombok invalidUser = TestDataFactory.invalidPasswordNoSymbol();
+        registrationAndAssertFailure(invalidUser);
     }
 }

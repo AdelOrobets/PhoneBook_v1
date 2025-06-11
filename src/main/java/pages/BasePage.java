@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -21,14 +22,9 @@ public abstract class BasePage {
 
     public <T extends BasePage> T clickHeaderMenuItem(HeaderMenuItem headerMenuItem) {
         String locator = headerMenuItem.getLocator();
-        WebElement element = driver.findElement(By.xpath(locator));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(element));
-
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
         element.click();
-        if (headerMenuItem == HeaderMenuItem.SIGNOUT) {
-            return null;
-        }
         return switch (headerMenuItem) {
             case HOME -> (T) new HomePage(driver);
             case ABOUT -> (T) new AboutPage(driver);
@@ -48,11 +44,26 @@ public abstract class BasePage {
         }
     }
 
-    public boolean isTextInElementPresent(WebElement element, String text) {
+    public boolean errorMessageContains(WebElement element, String expectedMessage) {
         try {
-            return element.getText().contains(text);
+            return element.getText().contains(expectedMessage);
         } catch (Exception e) {
             System.out.println("Element not found or text not present: " + e.getMessage());
+            return false;
+        }
+    }
+
+//    public boolean errorMessageContains(WebElement errorElement, String expectedMessage) {
+//        return isTextInElementPresent(errorElement, expectedMessage);
+//    }
+
+
+    protected boolean waitForVisibility(WebElement element, int timeoutSeconds) {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds))
+                    .until(ExpectedConditions.visibilityOf(element));
+            return element.isDisplayed();
+        } catch (TimeoutException e) {
             return false;
         }
     }

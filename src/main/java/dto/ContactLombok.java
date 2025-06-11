@@ -9,12 +9,11 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class Contact {
-    private String id;
+public class ContactLombok {
     private String name;
     private String lastName;
-    private String email;
     private String phone;
+    private String email;
     private String address;
     private String description;
 }
