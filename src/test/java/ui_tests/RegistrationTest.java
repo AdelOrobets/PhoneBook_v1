@@ -26,36 +26,27 @@ public class RegistrationTest extends ApplicationManager {
     @Owner("Adel Orobets")
     public void testSuccessfulRegistration() {
         loginPage.typeRegistrationForm(testUser);
-        ContactsPage contactsPage = new ContactsPage(driver);
-        Assert.assertTrue(contactsPage.isNoContactsMessageDisplayed(), "No Contacts here!");
+        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "Registration failed");
     }
 
     // Negative helper
     private void registrationAndAssertFailure(UserLombok user) {
         loginPage.typeRegistrationForm(user);
-        loginPage.closeAlert();
-
-        boolean errorDisplayed = loginPage.isRegistrationErrorMessageDisplayed("Registration failed");
-        System.out.println("Error displayed: " + errorDisplayed);
-
-        if (!errorDisplayed) {
-            Assert.fail("BUG: Registration succeeded with invalid data: " + user.getUsername()
-                    + " / " + user.getPassword());
-        } else {
-            System.out.println("Test passed: Error message correctly displayed");
-        }
+        boolean alertAppeared = loginPage.closeAlert();
+        Assert.assertTrue(alertAppeared, "BUG: Expected Alert not displayed");
     }
 
     @Test
     public void testNegative_UserAlreadyExist() {
         loginPage.typeRegistrationForm(testUser);
-        Assert.assertTrue(new ContactsPage(driver)
-                .isNoContactsTextPresent("No Contacts here!"));
+        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "Registration failed");
 
         new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.SIGNOUT);
+
         loginPage.typeRegistrationForm(testUser);
         loginPage.closeAlert();
-        Assert.assertTrue(loginPage.isRegistrationErrorMessageDisplayed("Registration failed"));
+        Assert.assertTrue(loginPage.isRegistrationErrorMessageDisplayed
+                ("Registration failed"));
     }
 
     @Test
