@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.TimeoutException;
 
 import java.security.SecureRandom;
 import java.time.Duration;
@@ -59,14 +60,15 @@ public class LoginPage extends BasePage {
         inputPassword.sendKeys(user.getPassword());
     }
 
-    public void closeAlert() {
+    public boolean closeAlert() {
         try {
-            Alert alert = new WebDriverWait(driver, Duration.ofSeconds(10))
+            Alert alert = new WebDriverWait(driver, Duration.ofSeconds(5))
                     .until(ExpectedConditions.alertIsPresent());
             System.out.println("Alert text: " + alert.getText());
             alert.accept();
-        } catch (Exception e) {
-            System.out.println("No alert present: " + e.getMessage());
+            return true;
+        } catch (TimeoutException e) {
+            return false;
         }
     }
 

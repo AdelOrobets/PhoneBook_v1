@@ -4,6 +4,7 @@ import dto.UserLombok;
 import io.qameta.allure.*;
 import manager.ApplicationManager;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
 import pages.HomePage;
@@ -12,6 +13,12 @@ import utils.HeaderMenuItem;
 
 @Feature("Registration")
 public class RegistrationTest extends ApplicationManager {
+
+    @BeforeMethod
+    public void prepareUser() {
+        createUniqueTestUser();
+        openLoginPage();
+    }
 
     @Test
     @Story("Successful registration with valid data")

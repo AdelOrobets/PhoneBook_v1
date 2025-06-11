@@ -1,73 +1,69 @@
 package ui_tests;
 
 import dto.UserLombok;
+import io.qameta.allure.*;
 import manager.ApplicationManager;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
 import pages.HomePage;
 import pages.LoginPage;
-import utils.HeaderMenuItem;
 
-import java.time.Duration;
+import static utils.HeaderMenuItem.SIGNOUT;
 
+@Feature("Login")
 public class LoginTests extends ApplicationManager {
 
-    @Test
-    public void testLoginFormDisplayed() {
-        Assert.assertTrue(loginPage.isLoginFormDisplayed());
+    @BeforeMethod
+    public void prepareUser() {
+        createUniqueTestUser();
+        openLoginPage();
     }
 
     @Test
+    public void testLoginFormDisplayed() {
+        Assert.assertTrue(loginPage.isLoginFormDisplayed(), "Login Form is not displayed");
+    }
+
+    @Test
+    @Story("Successful Login with valid data")
+    @Severity(SeverityLevel.BLOCKER)
+    @Owner("Adel Orobets")
     public void testSuccessfulLogin() {
         loginPage.typeRegistrationForm(testUser);
-        Assert.assertTrue(new ContactsPage(driver)
-                .isNoContactsTextPresent("No Contacts here!"));
+        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "Registration failed");
 
-        new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.SIGNOUT);
+        new HomePage(driver).clickHeaderMenuItem(SIGNOUT);
 
         loginPage.typeLoginForm(testUser);
         loginPage.closeAlert();
-        Assert.assertTrue(new ContactsPage(driver)
-                .isNoContactsTextPresent("No Contacts here!"));
+        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "login failed");
     }
 
     /**
      * Known bug: REG-1
-     * Expected: Email casing should be ignored during login. Email addresses should be treated as case-insensitive.
+     * Expected: Email casing should be ignored during login.
+     * Email addresses should be treated as case-insensitive.
      * Actual: Login fails if the email address casing does not exactly match the registered casing.
      */
     @Test(description = "Positive test: successful Login with uppercase Email — expected to pass, but to bug REG-1")
     public void testSuccessfulLogin_uppercaseEmail() {
         String email = testUser.getUsername().toUpperCase();
         loginPage.typeRegistrationForm(new UserLombok(email, testUser.getPassword()));
-        Assert.assertTrue(new ContactsPage(driver)
-                .isNoContactsTextPresent("No Contacts here!"));
+        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "Registration failed");
 
-        new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.SIGNOUT);
+        new HomePage(driver).clickHeaderMenuItem(SIGNOUT);
 
         loginPage.typeLoginForm(new UserLombok(email, testUser.getPassword()));
-        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed());
+        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "login failed");
     }
 
     // Negative helper
     private void loginAndAssertFailure(UserLombok user) {
         loginPage.typeLoginForm(user);
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-            wait.until(ExpectedConditions.alertIsPresent());
-
-            Alert alert = driver.switchTo().alert();
-            Assert.assertEquals(alert.getText(), "Wrong email or password");
-            System.out.println("Alert text: " + alert.getText());
-            alert.accept();
-        } catch (TimeoutException e) {
-            Assert.fail("BUG: Expected alert not displayed after login attempt with invalid credentials");
-        }
+        boolean alertAppeared = loginPage.closeAlert();
+        Assert.assertTrue(alertAppeared, "BUG: Expected Alert not displayed");
     }
 
     @Test
@@ -75,7 +71,7 @@ public class LoginTests extends ApplicationManager {
         loginAndAssertFailure(new UserLombok(testUser.getUsername(), testUser.getPassword()));
     }
 
-
+    // Different passwords for registration and login
     @Test
     public void loginNegativeTest_wrongPassword() {
         String wrongPassword = LoginPage.generatePassword(9);
@@ -92,6 +88,7 @@ public class LoginTests extends ApplicationManager {
         loginAndAssertFailure(new UserLombok(testUser.getUsername(), ""));
     }
 
+    // Email without @
     @Test
     public void loginNegativeTest_invalidUsernameFormat() {
         String email = LoginPage.generateInvalidEmailNoAtSymbol(10);
