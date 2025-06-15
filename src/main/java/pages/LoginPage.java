@@ -20,12 +20,16 @@ public class LoginPage extends BasePage {
 
     @FindBy(xpath = "//*[@id='root']/div[2]/div/form")
     WebElement loginForm;
+
     @FindBy(name = "email")
     WebElement inputEmail;
+
     @FindBy(name = "password")
     WebElement inputPassword;
+
     @FindBy(xpath = "//button[@type='submit']")
     WebElement submitButton;
+
     @FindBy(xpath = "//button[@name='registration']")
     WebElement registrationButton;
 
@@ -36,7 +40,6 @@ public class LoginPage extends BasePage {
     @Getter
     @FindBy(xpath = "//*[contains(text(), 'Login Failed')]")
     WebElement errorMsgLogin;
-
 
 
     public boolean isLoginFormDisplayed() {

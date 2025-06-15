@@ -22,9 +22,15 @@ public abstract class BasePage {
 
     public <T extends BasePage> T clickHeaderMenuItem(HeaderMenuItem headerMenuItem) {
         String locator = headerMenuItem.getLocator();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
-        element.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        try {
+            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
+            element.click();
+        } catch (TimeoutException e) {
+            throw new AssertionError("Failed to click header menu item: " + headerMenuItem.name() +
+                    " Element not clickable within timeout. XPath: " + locator, e);
+        }
+
         return switch (headerMenuItem) {
             case HOME -> (T) new HomePage(driver);
             case ABOUT -> (T) new AboutPage(driver);

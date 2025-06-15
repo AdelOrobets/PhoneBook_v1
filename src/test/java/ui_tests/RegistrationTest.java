@@ -1,7 +1,6 @@
 package ui_tests;
 
 import dto.UserLombok;
-import io.qameta.allure.*;
 import manager.ApplicationManager;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,7 +9,6 @@ import pages.HomePage;
 import utils.HeaderMenuItem;
 import utils.TestDataFactory;
 
-@Feature("Registration")
 public class RegistrationTest extends ApplicationManager {
 
     // Positive tests
@@ -64,6 +62,13 @@ public class RegistrationTest extends ApplicationManager {
         registrationAndAssertFailure(invalidUser);
     }
 
+    /**
+     * Known bug: REG-5
+     * Expected: Registration should be blocked if the email domain is invalid
+     * (e.g., "test@gmail" without a top-level domain).
+     * Actual: Registration succeeds with an invalid email
+     * This test demonstrates that the email validation logic does not correctly enforce domain formatting.
+     */
     @Test
     public void testNegative_invalidUsernameDomain() {
         UserLombok invalidUser = TestDataFactory.invalidEmailNoDomain();
@@ -88,7 +93,7 @@ public class RegistrationTest extends ApplicationManager {
      * Expected: Registration should fail when password length > 15.
      * Actual: Registration succeeds with password length > 15.
      */
-    @Test(description = "Negative test: password too long (>15) — expected to fail due to bug REG-2")
+    @Test
     public void testNegative_invalidPasswordLong() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordTooLong();
         registrationAndAssertFailure(invalidUser);

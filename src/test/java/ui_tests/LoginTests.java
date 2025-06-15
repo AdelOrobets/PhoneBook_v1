@@ -1,30 +1,24 @@
 package ui_tests;
 
 import dto.UserLombok;
-import io.qameta.allure.Feature;
 import manager.ApplicationManager;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
-import pages.HomePage;
-import utils.HeaderMenuItem;
 import utils.TestDataFactory;
 
-import static utils.HeaderMenuItem.SIGNOUT;
-
-@Feature("Login")
 public class LoginTests extends ApplicationManager {
 
     public UserLombok userRegistration() {
         UserLombok user = TestDataFactory.validUser();
         openLoginPage();
         loginPage.typeRegistrationForm(user);
-        new HomePage(getDriver()).clickHeaderMenuItem(HeaderMenuItem.SIGNOUT);
         return user;
     }
 
     @Test
     public void testLoginFormDisplayed() {
+        openLoginPage();
         Assert.assertTrue(loginPage.isLoginFormDisplayed(),
                 "Login Form is not displayed");
     }
@@ -35,7 +29,6 @@ public class LoginTests extends ApplicationManager {
         openLoginPage();
         loginPage.typeLoginForm(validUser);
         Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "login failed");
-
     }
 
     /**
@@ -44,7 +37,7 @@ public class LoginTests extends ApplicationManager {
      * Email addresses should be treated as case-insensitive.
      * Actual: Login fails if the email address casing does not exactly match the registered casing.
      */
-    @Test(description = "Positive test: successful Login with uppercase Email — expected to pass, but to bug REG-1")
+    @Test
     public void testUserLogin_uppercaseEmail() {
         UserLombok validUser = userRegistration();
         String upperCaseEmail = validUser.getUsername().toUpperCase();
