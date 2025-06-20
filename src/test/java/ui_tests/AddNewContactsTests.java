@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import pages.*;
-import utils.HeaderMenuItem;
 import utils.TestDataFactory;
 
 public class AddNewContactsTests extends ApplicationManager {
@@ -50,7 +49,6 @@ public class AddNewContactsTests extends ApplicationManager {
         logger.info("Starting test: testAddNewContactS_AllFieldsEmpty");
         ContactLombok contact = TestDataFactory.allFieldsEmpty();
         contactsPage = new ContactsPage(driver);
-        contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
         openAddPage();
         addPage.addNewContactInForm(contact);
         Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone not valid"));
@@ -62,7 +60,6 @@ public class AddNewContactsTests extends ApplicationManager {
     public void testAddContact_WithoutName() {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutName();
         contactsPage = new ContactsPage(driver);
-        contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
         openAddPage();
         addPage.addNewContactInForm(contact);
         String alertText = addPage.closeAlertReturnText();
@@ -75,7 +72,6 @@ public class AddNewContactsTests extends ApplicationManager {
     public void testAddContact_WithoutLastName() {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutLastName();
         contactsPage = new ContactsPage(driver);
-        contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
         openAddPage();
         addPage.addNewContactInForm(contact);
         String alertText = addPage.closeAlertReturnText();
@@ -87,7 +83,6 @@ public class AddNewContactsTests extends ApplicationManager {
     public void testAddContactWithoutPhone() {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutPhone();
         contactsPage = new ContactsPage(driver);
-        contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
         openAddPage();
         addPage.addNewContactInForm(contact);
         String alertText = addPage.closeAlertReturnText();
@@ -99,7 +94,6 @@ public class AddNewContactsTests extends ApplicationManager {
     public void testAddContactWithInvalidEmailFormat() {
         ContactLombok contact = TestDataFactory.invalidEmailFormat();
         contactsPage = new ContactsPage(driver);
-        contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
         openAddPage();
         addPage.addNewContactInForm(contact);
         String alertText = addPage.closeAlertReturnText();
@@ -111,7 +105,6 @@ public class AddNewContactsTests extends ApplicationManager {
     public void testAddContactWithInvalidPhoneFormat() {
         ContactLombok contact = TestDataFactory.invalidPhoneFormat();
         contactsPage = new ContactsPage(driver);
-        contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
         openAddPage();
         addPage.addNewContactInForm(contact);
         String alertText = addPage.closeAlertReturnText();
@@ -124,7 +117,6 @@ public class AddNewContactsTests extends ApplicationManager {
     public void testAddContactWithTooLongFields() {
         ContactLombok contact = TestDataFactory.tooLongFields();
         contactsPage = new ContactsPage(driver);
-        contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
         openAddPage();
         addPage.addNewContactInForm(contact);
         String alertText = addPage.closeAlertReturnText();
@@ -137,7 +129,6 @@ public class AddNewContactsTests extends ApplicationManager {
     public void testAddContactWithSpecialCharacters() {
         ContactLombok contact = TestDataFactory.invalidFieldsWithSpecialCharacters();
         contactsPage = new ContactsPage(driver);
-        contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
         openAddPage();
         addPage.addNewContactInForm(contact);
         String alertText = addPage.closeAlertReturnText();

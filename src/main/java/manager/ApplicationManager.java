@@ -38,9 +38,8 @@ public class ApplicationManager {
     }
 
     public void openAddPage() {
-        addPage = new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.ADD);
+        addPage = contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
     }
-
 
     @BeforeMethod
     public void setUpTest() {
