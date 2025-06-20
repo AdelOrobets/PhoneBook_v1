@@ -18,7 +18,7 @@ public class HomePage extends BasePage {
     public HomePage(WebDriver driver) {
         super(driver);
         driver.get(URL);
-        new WebDriverWait(driver, Duration.ofSeconds(30))
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOf(textHomePage));
     }
 

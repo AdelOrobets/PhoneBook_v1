@@ -1,15 +1,14 @@
 package dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
+@ToString
+@Builder
 @Getter
 @Setter
-@Builder
-@ToString
+@AllArgsConstructor
 public class ContactLombok {
+
     private String name;
     private String lastName;
     private String phone;
@@ -17,3 +16,4 @@ public class ContactLombok {
     private String address;
     private String description;
 }
+

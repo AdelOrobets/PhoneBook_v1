@@ -14,11 +14,19 @@ public class RandomUtils {
             "George", "Alex", "Ivan", "Julia", "Doris", "Adel",
             "Mike", "Nina", "David", "Hana", "Maria", "Noa");
 
+    public static String generateFirstNameFromList() {
+        return FIRST_NAMES.get(random.nextInt(FIRST_NAMES.size()));
+    }
+
     // lastName
     private static final List<String> LAST_NAMES = List.of(
             "Cohen", "Levi", "Mizrahi", "Avraham", "Biton", "Peretz"
             , "BenDavid", "Malka", "Azoulay", "Elbaz", "Sharabi", "Dayan",
             "Mor", "Haim", "Zohar", "Halimi", "Alon", "Nahum");
+
+    public static String generateLastNameFromList() {
+        return LAST_NAMES.get(random.nextInt(LAST_NAMES.size()));
+    }
 
     // address
     private static final List<String> ADDRESSES = List.of(
@@ -36,19 +44,20 @@ public class RandomUtils {
             "3 HaHashmonaim St, Bat Yam",
             "66 Arlozorov St, Modi'in",
             "5 King George St, Herzliya",
-            "77 Bialik St, Rishon LeZion"
-    );
-
-    public static String generateFirstNameFromList() {
-        return FIRST_NAMES.get(random.nextInt(FIRST_NAMES.size()));
-    }
-
-    public static String generateLastNameFromList() {
-        return LAST_NAMES.get(random.nextInt(LAST_NAMES.size()));
-    }
+            "77 Bialik St, Rishon LeZion");
 
     public static String generateAddressList() {
         return ADDRESSES.get(random.nextInt(ADDRESSES.size()));
+    }
+
+    // description in contact
+    private static final List<String> DESCRIPTIONS = List.of(
+            "Family", "Friend", "Work", "Colleague", "Client", "Doctor", "Teacher",
+            "Neighbor", "Classmate", "Service Provider", "Organization", "Partner",
+            "Emergency", "Gym Trainer", "Lawyer", "Mentor", "Plumber", "Electrician");
+
+    public static String generateDescription() {
+        return DESCRIPTIONS.get(random.nextInt(DESCRIPTIONS.size()));
     }
 
     // Generates valid random email
@@ -113,8 +122,7 @@ public class RandomUtils {
         Random random = new Random();
         int[] prefixes = {50, 52, 53, 54, 55};
         int prefix = prefixes[random.nextInt(prefixes.length)];
-        int number = 1000000 + random.nextInt(9000000);
-        return String.format("+972%d%07d", prefix, number);
+        int number = 1000000 + random.nextInt(9000000);  // 7 цифр
+        return String.format("0%d%07d", prefix, number);
     }
-
 }

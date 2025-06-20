@@ -2,11 +2,11 @@ package pages;
 
 import dto.UserLombok;
 import lombok.Getter;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -51,9 +51,13 @@ public class LoginPage extends BasePage {
         clickLoginButton();
     }
 
-    public void clickLoginButton() {
+    public ContactsPage clickLoginButton() {
         submitButton.click();
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlContains("/contacts"));
+        return new ContactsPage(driver);
     }
+
 
     public void fillCredentials(String email, String password) {
         enterEmail(email);
@@ -88,5 +92,4 @@ public class LoginPage extends BasePage {
             return false;
         }
     }
-
 }

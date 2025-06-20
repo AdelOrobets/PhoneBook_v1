@@ -59,11 +59,6 @@ public abstract class BasePage {
         }
     }
 
-//    public boolean errorMessageContains(WebElement errorElement, String expectedMessage) {
-//        return isTextInElementPresent(errorElement, expectedMessage);
-//    }
-
-
     protected boolean waitForVisibility(WebElement element, int timeoutSeconds) {
         try {
             new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds))

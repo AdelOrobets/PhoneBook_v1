@@ -29,6 +29,10 @@ public class ContactsPage extends BasePage {
         return isElementPresent(noContactsMsg) || (contactsCards != null && !contactsCards.isEmpty());
     }
 
+    public int getContactsListSize() {
+        return contactsCards.size();
+    }
+
     public void deleteFirstContact() {
         if (!contactsCards.isEmpty()) {
             contactsCards.get(0).click();

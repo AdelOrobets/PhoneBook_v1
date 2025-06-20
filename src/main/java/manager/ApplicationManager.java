@@ -2,13 +2,11 @@ package manager;
 
 import dto.UserLombok;
 import lombok.Getter;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import pages.AboutPage;
-import pages.HomePage;
-import pages.LoginPage;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import pages.*;
 import utils.HeaderMenuItem;
 
 import java.time.Duration;
@@ -20,6 +18,8 @@ public class ApplicationManager {
     public HomePage homePage;
     public AboutPage aboutPage;
     public LoginPage loginPage;
+    public ContactsPage contactsPage;
+    public AddPage addPage;
     public UserLombok testUser;
 
     public WebDriver initDriver() {
@@ -35,6 +35,10 @@ public class ApplicationManager {
 
     public void openAboutPage() {
         aboutPage = new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.ABOUT);
+    }
+
+    public void openAddPage() {
+        addPage = new HomePage(driver).clickHeaderMenuItem(HeaderMenuItem.ADD);
     }
 
 
