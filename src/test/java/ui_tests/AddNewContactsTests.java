@@ -3,6 +3,7 @@ package ui_tests;
 import dto.ContactLombok;
 import dto.UserLombok;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import manager.ApplicationManager;
 import org.slf4j.Logger;
@@ -10,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import pages.*;
 import utils.TestDataFactory;
+import utils.TestNGListener;
 
+@Listeners(TestNGListener.class)
 public class AddNewContactsTests extends ApplicationManager {
 
     private static final Logger logger = LoggerFactory.getLogger(AddNewContactsTests.class);
@@ -25,34 +28,46 @@ public class AddNewContactsTests extends ApplicationManager {
     // Positive tests
     @Test
     public void testSuccessful_addNewContact() {
-        logger.info("Starting test: testSuccessful_addNewContact");
         contactsPage = new ContactsPage(driver);
         int sizeBeforeAdd = contactsPage.getContactsListSize();
         logger.info("Contacts before add: {}", sizeBeforeAdd);
 
         openAddPage();
         ContactLombok contact = TestDataFactory.validContact();
-        addPage.addNewContactInForm(contact);
-        // BUG: Success message is not displayed after adding a contact
+        addPage.fillContactForm(contact);
+        // BUG: Success a message is not displayed after adding a contact
         // Assert.assertTrue(addPage.closeAlertReturnText().contains("Contact was added!"));
 
         contactsPage = new ContactsPage(driver);
         int sizeAfterAdd = contactsPage.getContactsListSize();
         logger.info("Contacts after add: {}", sizeAfterAdd);
         Assert.assertEquals(sizeAfterAdd, sizeBeforeAdd + 1, "Contact was not added");
-        logger.info("Contact was added successfully");
     }
+
+    @Test(dataProvider = "addNewContactDPFromFile", dataProviderClass = data_provider.ContactDataProviders.class)
+    public void testSuccessful_addNewContactFromCSV(ContactLombok contact) {
+        contactsPage = new ContactsPage(driver);
+        int sizeBeforeAdd = contactsPage.getContactsListSize();
+
+        openAddPage();
+        logger.info("Test data: {}", contact);
+        addPage.fillContactFormFromFileCSV(contact);
+        addPage.clickSaveButton();
+
+        contactsPage = new ContactsPage(driver);
+        int sizeAfterAdd = contactsPage.getContactsListSize();
+        Assert.assertEquals(sizeAfterAdd, sizeBeforeAdd + 1, "Contact was not added");
+    }
+
 
     // Negative tests
     @Test
     public void testAddNewContactS_AllFieldsEmpty(){
-        logger.info("Starting test: testAddNewContactS_AllFieldsEmpty");
         ContactLombok contact = TestDataFactory.allFieldsEmpty();
         contactsPage = new ContactsPage(driver);
         openAddPage();
-        addPage.addNewContactInForm(contact);
+        addPage.fillContactForm(contact);
         Assert.assertTrue(addPage.closeAlertReturnText().contains("Phone not valid"));
-        logger.info("Contact was not added");
     }
 
     // BUG: no error message and Save button is not clickable if the Name field is left blank
@@ -61,7 +76,7 @@ public class AddNewContactsTests extends ApplicationManager {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutName();
         contactsPage = new ContactsPage(driver);
         openAddPage();
-        addPage.addNewContactInForm(contact);
+        addPage.fillContactForm(contact);
         String alertText = addPage.closeAlertReturnText();
         Assert.assertTrue(alertText.contains("Name is required"),
                 "Expected error message for missing name");
@@ -73,7 +88,7 @@ public class AddNewContactsTests extends ApplicationManager {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutLastName();
         contactsPage = new ContactsPage(driver);
         openAddPage();
-        addPage.addNewContactInForm(contact);
+        addPage.fillContactForm(contact);
         String alertText = addPage.closeAlertReturnText();
         Assert.assertTrue(alertText.contains("Last name is required"),
                 "Expected error message for missing last name");
@@ -84,7 +99,7 @@ public class AddNewContactsTests extends ApplicationManager {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutPhone();
         contactsPage = new ContactsPage(driver);
         openAddPage();
-        addPage.addNewContactInForm(contact);
+        addPage.fillContactForm(contact);
         String alertText = addPage.closeAlertReturnText();
         Assert.assertTrue(alertText.contains("Phone not valid"),
                 "Expected error message for missing phone");
@@ -95,7 +110,7 @@ public class AddNewContactsTests extends ApplicationManager {
         ContactLombok contact = TestDataFactory.invalidEmailFormat();
         contactsPage = new ContactsPage(driver);
         openAddPage();
-        addPage.addNewContactInForm(contact);
+        addPage.fillContactForm(contact);
         String alertText = addPage.closeAlertReturnText();
         Assert.assertTrue(alertText.contains("Email not valid"),
                 "Expected error message for invalid email format");
@@ -106,7 +121,7 @@ public class AddNewContactsTests extends ApplicationManager {
         ContactLombok contact = TestDataFactory.invalidPhoneFormat();
         contactsPage = new ContactsPage(driver);
         openAddPage();
-        addPage.addNewContactInForm(contact);
+        addPage.fillContactForm(contact);
         String alertText = addPage.closeAlertReturnText();
         Assert.assertTrue(alertText.contains("Phone not valid"),
                 "Expected error message for invalid phone format");
@@ -118,7 +133,7 @@ public class AddNewContactsTests extends ApplicationManager {
         ContactLombok contact = TestDataFactory.tooLongFields();
         contactsPage = new ContactsPage(driver);
         openAddPage();
-        addPage.addNewContactInForm(contact);
+        addPage.fillContactForm(contact);
         String alertText = addPage.closeAlertReturnText();
         Assert.assertTrue(alertText.contains("Phone not valid"),
                  "Expected error message for too long fields");
@@ -130,7 +145,7 @@ public class AddNewContactsTests extends ApplicationManager {
         ContactLombok contact = TestDataFactory.invalidFieldsWithSpecialCharacters();
         contactsPage = new ContactsPage(driver);
         openAddPage();
-        addPage.addNewContactInForm(contact);
+        addPage.fillContactForm(contact);
         String alertText = addPage.closeAlertReturnText();
         Assert.assertTrue(alertText.contains("Email not valid")
                 || alertText.contains("Phone not valid"),

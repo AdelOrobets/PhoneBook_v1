@@ -41,7 +41,7 @@ public class AddPage extends BasePage {
     @FindBy(xpath = "//b/.")
     WebElement saveButton;
 
-    public void addNewContactInForm(ContactLombok contact) {
+    public void fillContactForm(ContactLombok contact) {
         logger.info("Filling contact form with data:");
         logger.info("Name: {}", contact.getName());
         logger.info("LastName: {}", contact.getLastName());
@@ -67,4 +67,18 @@ public class AddPage extends BasePage {
         alert.accept();
         return text;
     }
+
+    public void clickSaveButton() {
+        saveButton.click();
+    }
+
+    public void fillContactFormFromFileCSV(ContactLombok contact) {
+        inputName.sendKeys(contact.getName());
+        inputLastName.sendKeys(contact.getLastName());
+        inputPhone.sendKeys(contact.getPhone());
+        inputEmail.sendKeys(contact.getEmail());
+        inputAddress.sendKeys(contact.getAddress());
+        inputDescription.sendKeys(contact.getDescription());
+    }
 }
+
