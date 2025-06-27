@@ -2,20 +2,12 @@ package utils;
 
 import dto.ContactLombok;
 import dto.UserLombok;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TestDataFactory {
-
-    private static final Logger logger = LoggerFactory.getLogger(TestDataFactory.class);
 
     public static UserLombok validUser() {
         String email = RandomUtils.generateEmail(8);
         String password = RandomUtils.generatePassword(10);
-
-        logger.info("Generating valid user:");
-        logger.info("Email: {}", email);
-        logger.info("Password: {}", password);
         return new UserLombok(email, password);
     }
 
@@ -106,7 +98,7 @@ public class TestDataFactory {
 
     public static ContactLombok invalidFieldWithoutName() {
         return ContactLombok.builder()
-                .name("")
+                .name("") // ❌
                 .lastName(RandomUtils.generateLastNameFromList())
                 .phone(RandomUtils.generatePhoneNumber())
                 .email(RandomUtils.generateEmail(8))
@@ -118,7 +110,7 @@ public class TestDataFactory {
     public static ContactLombok invalidFieldWithoutLastName() {
         return ContactLombok.builder()
                 .name(RandomUtils.generateFirstNameFromList())
-                .lastName("")
+                .lastName("") // ❌
                 .phone(RandomUtils.generatePhoneNumber())
                 .email(RandomUtils.generateEmail(8))
                 .address(RandomUtils.generateAddressList())
@@ -130,7 +122,7 @@ public class TestDataFactory {
         return ContactLombok.builder()
                 .name(RandomUtils.generateFirstNameFromList())
                 .lastName(RandomUtils.generateLastNameFromList())
-                .phone("")
+                .phone("") // ❌
                 .email(RandomUtils.generateEmail(8))
                 .address(RandomUtils.generateAddressList())
                 .description(RandomUtils.generateDescription())
@@ -142,7 +134,7 @@ public class TestDataFactory {
                 .name(RandomUtils.generateFirstNameFromList())
                 .lastName(RandomUtils.generateLastNameFromList())
                 .phone(RandomUtils.generatePhoneNumber())
-                .email("invalidEmailFormat")
+                .email("invalidEmailFormat") // ❌
                 .address(RandomUtils.generateAddressList())
                 .description(RandomUtils.generateDescription())
                 .build();
@@ -152,7 +144,7 @@ public class TestDataFactory {
         return ContactLombok.builder()
                 .name(RandomUtils.generateFirstNameFromList())
                 .lastName(RandomUtils.generateLastNameFromList())
-                .phone("123abc4561")
+                .phone("123abc4561") // ❌
                 .email(RandomUtils.generateEmail(8))
                 .address(RandomUtils.generateAddressList())
                 .description(RandomUtils.generateDescription())

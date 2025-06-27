@@ -3,10 +3,13 @@ package ui_tests;
 import dto.UserLombok;
 import manager.ApplicationManager;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
 import utils.TestDataFactory;
+import utils.TestNGListener;
 
+@Listeners(TestNGListener.class)
 public class LoginTests extends ApplicationManager {
 
     public UserLombok userRegistration() {
