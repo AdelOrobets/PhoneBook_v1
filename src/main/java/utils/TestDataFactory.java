@@ -5,76 +5,55 @@ import dto.UserLombok;
 
 public class TestDataFactory {
 
+    // USERS
     public static UserLombok validUser() {
-        String email = RandomUtils.generateEmail(8);
-        String password = RandomUtils.generatePassword(10);
-        return new UserLombok(email, password);
+        return new UserLombok(RandomUtils.generateEmail(8), RandomUtils.generatePassword(10));
+    }
+
+    private static UserLombok.UserLombokBuilder baseUser() {
+        return UserLombok.builder()
+                .username(RandomUtils.generateEmail(8))
+                .password(RandomUtils.generatePassword(10));
     }
 
     public static UserLombok userWithoutEmail() {
-        return UserLombok.builder()
-                .username("") // ❌
-                .password(RandomUtils.generatePassword(10))
-                .build();
+        return baseUser().username("").build();
     }
 
     public static UserLombok userWithoutPassword() {
-        return UserLombok.builder()
-                .username(RandomUtils.generateEmail(8))
-                .password("") // ❌
-                .build();
+        return baseUser().password("").build();
     }
 
     public static UserLombok invalidEmailNoAtSymbol() {
-        return UserLombok.builder()
-                .username(RandomUtils.generateInvalidEmailNoAtSymbol(10)) // ❌
-                .password(RandomUtils.generatePassword(10))
-                .build();
+        return baseUser().username(RandomUtils.generateInvalidEmailNoAtSymbol(10)).build();
     }
 
     public static UserLombok invalidEmailNoDomain() {
-        return UserLombok.builder()
-                .username(RandomUtils.generateInvalidEmailNoDomain(10)) // ❌
-                .password(RandomUtils.generatePassword(10))
-                .build();
+        return baseUser().username(RandomUtils.generateInvalidEmailNoDomain(10)).build();
     }
 
     public static UserLombok invalidEmailWithSpace() {
-        return UserLombok.builder()
-                .username(RandomUtils.generateEmail(4) + " " + RandomUtils.generateEmail(4)) // ❌
-                .password(RandomUtils.generatePassword(10))
-                .build();
+        return baseUser().username(RandomUtils.generateEmail(4) + " " + RandomUtils.
+                generateEmail(4)).build();
     }
 
     public static UserLombok invalidPasswordTooShort() {
-        return UserLombok.builder()
-                .username(RandomUtils.generateEmail(8))
-                .password(RandomUtils.generatePassword(1)) // ❌
-                .build();
+        return baseUser().password(RandomUtils.generatePassword(1)).build();
     }
 
     public static UserLombok invalidPasswordTooLong() {
-        return UserLombok.builder()
-                .username(RandomUtils.generateEmail(8))
-                .password(RandomUtils.generatePassword(16)) // ❌
-                .build();
+        return baseUser().password(RandomUtils.generatePassword(16)).build();
     }
 
     public static UserLombok invalidPasswordNoDigit() {
-        return UserLombok.builder()
-                .username(RandomUtils.generateEmail(8))
-                .password(RandomUtils.generatePasswordInvalidNoDigit(10)) // ❌
-                .build();
+        return baseUser().password(RandomUtils.generatePasswordInvalidNoDigit(10)).build();
     }
 
     public static UserLombok invalidPasswordNoSymbol() {
-        return UserLombok.builder()
-                .username(RandomUtils.generateEmail(8))
-                .password(RandomUtils.generatePasswordInvalidNoSymbol(10)) // ❌
-                .build();
+        return baseUser().password(RandomUtils.generatePasswordInvalidNoSymbol(10)).build();
     }
 
-    // add new contact
+    // CONTACTS
     public static ContactLombok validContact() {
         return new ContactLombok(
                 RandomUtils.generateFirstNameFromList(),
@@ -82,7 +61,18 @@ public class TestDataFactory {
                 RandomUtils.generatePhoneNumber(),
                 RandomUtils.generateEmail(8),
                 RandomUtils.generateAddressList(),
-                RandomUtils.generateDescription());
+                RandomUtils.generateDescription()
+        );
+    }
+
+    private static ContactLombok.ContactLombokBuilder baseContact() {
+        return ContactLombok.builder()
+                .name(RandomUtils.generateFirstNameFromList())
+                .lastName(RandomUtils.generateLastNameFromList())
+                .phone(RandomUtils.generatePhoneNumber())
+                .email(RandomUtils.generateEmail(8))
+                .address(RandomUtils.generateAddressList())
+                .description(RandomUtils.generateDescription());
     }
 
     public static ContactLombok allFieldsEmpty() {
@@ -97,58 +87,23 @@ public class TestDataFactory {
     }
 
     public static ContactLombok invalidFieldWithoutName() {
-        return ContactLombok.builder()
-                .name("") // ❌
-                .lastName(RandomUtils.generateLastNameFromList())
-                .phone(RandomUtils.generatePhoneNumber())
-                .email(RandomUtils.generateEmail(8))
-                .address(RandomUtils.generateAddressList())
-                .description(RandomUtils.generateDescription())
-                .build();
+        return baseContact().name("").build();
     }
 
     public static ContactLombok invalidFieldWithoutLastName() {
-        return ContactLombok.builder()
-                .name(RandomUtils.generateFirstNameFromList())
-                .lastName("") // ❌
-                .phone(RandomUtils.generatePhoneNumber())
-                .email(RandomUtils.generateEmail(8))
-                .address(RandomUtils.generateAddressList())
-                .description(RandomUtils.generateDescription())
-                .build();
+        return baseContact().lastName("").build();
     }
 
     public static ContactLombok invalidFieldWithoutPhone() {
-        return ContactLombok.builder()
-                .name(RandomUtils.generateFirstNameFromList())
-                .lastName(RandomUtils.generateLastNameFromList())
-                .phone("") // ❌
-                .email(RandomUtils.generateEmail(8))
-                .address(RandomUtils.generateAddressList())
-                .description(RandomUtils.generateDescription())
-                .build();
+        return baseContact().phone("").build();
     }
 
     public static ContactLombok invalidEmailFormat() {
-        return ContactLombok.builder()
-                .name(RandomUtils.generateFirstNameFromList())
-                .lastName(RandomUtils.generateLastNameFromList())
-                .phone(RandomUtils.generatePhoneNumber())
-                .email("invalidEmailFormat") // ❌
-                .address(RandomUtils.generateAddressList())
-                .description(RandomUtils.generateDescription())
-                .build();
+        return baseContact().email("invalidEmailFormat").build();
     }
 
     public static ContactLombok invalidPhoneFormat() {
-        return ContactLombok.builder()
-                .name(RandomUtils.generateFirstNameFromList())
-                .lastName(RandomUtils.generateLastNameFromList())
-                .phone("123abc4561") // ❌
-                .email(RandomUtils.generateEmail(8))
-                .address(RandomUtils.generateAddressList())
-                .description(RandomUtils.generateDescription())
-                .build();
+        return baseContact().phone("123abc4561").build();
     }
 
     public static ContactLombok tooLongFields() {
