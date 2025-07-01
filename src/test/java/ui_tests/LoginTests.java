@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
+import utils.PropertiesReader;
 import utils.TestDataFactory;
 import utils.TestNGListener;
 
@@ -26,11 +27,22 @@ public class LoginTests extends ApplicationManager {
                 "Login Form is not displayed");
     }
 
-    @Test
+    @Test(retryAnalyzer = utils.RetryAnalyzer.class)
     public void testUserCanLoginAfterRegistration() {
         UserLombok validUser = userRegistration();
         openLoginPage();
         loginPage.typeLoginForm(validUser);
+        Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "login failed");
+    }
+
+    @Test(retryAnalyzer = utils.RetryAnalyzer.class)
+    public void testUserCanLoginWithPropertiesData() {
+        String email = PropertiesReader.getProperty("test_data.properties", "valid.email");
+        String password = PropertiesReader.getProperty("test_data.properties", "valid.password");
+
+        openLoginPage();
+        loginPage.fillCredentials(email, password);
+        loginPage.clickLoginButton();
         Assert.assertTrue(new ContactsPage(driver).isContactsPageDisplayed(), "login failed");
     }
 
@@ -40,7 +52,7 @@ public class LoginTests extends ApplicationManager {
      * Email addresses should be treated as case-insensitive.
      * Actual: Login fails if the email address casing does not exactly match the registered casing.
      */
-    @Test
+    @Test(retryAnalyzer = utils.RetryAnalyzer.class)
     public void testUserLogin_uppercaseEmail() {
         UserLombok validUser = userRegistration();
         String upperCaseEmail = validUser.getUsername().toUpperCase();

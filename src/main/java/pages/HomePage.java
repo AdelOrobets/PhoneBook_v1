@@ -5,12 +5,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.PropertiesReader;
 
 import java.time.Duration;
 
 public class HomePage extends BasePage {
 
-    private static final String URL = "https://telranedu.web.app";
+    private static final String URL = PropertiesReader.getProperty("config.properties", "base.url");
 
     @FindBy(xpath = "//h1[text()='Home Component']")
     WebElement textHomePage;
