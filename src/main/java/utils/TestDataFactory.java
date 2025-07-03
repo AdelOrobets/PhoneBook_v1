@@ -7,7 +7,8 @@ public class TestDataFactory {
 
     // USERS
     public static UserLombok validUser() {
-        return new UserLombok(RandomUtils.generateEmail(8), RandomUtils.generatePassword(10));
+        return new UserLombok(RandomUtils.generateEmail(8),
+                RandomUtils.generatePassword(10));
     }
 
     private static UserLombok.UserLombokBuilder baseUser() {

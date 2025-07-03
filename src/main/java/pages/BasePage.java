@@ -20,6 +20,7 @@ public abstract class BasePage {
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 20), this);
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends BasePage> T clickHeaderMenuItem(HeaderMenuItem headerMenuItem) {
         String locator = headerMenuItem.getLocator();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
