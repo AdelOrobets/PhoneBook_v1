@@ -18,4 +18,16 @@ public class AuthenticationController implements BaseAPI {
                 .thenReturn()
                 ;
     }
+
+    protected void register_void(UserLombok user) {
+        requestRegLogin(user, REGISTRATION_URL);
+    }
+
+    protected Response register_returnResponse(UserLombok user) {
+        return requestRegLogin(user, REGISTRATION_URL);
+    }
+
+    protected Response login(UserLombok user) {
+        return requestRegLogin(user, LOGIN_URL);
+    }
 }

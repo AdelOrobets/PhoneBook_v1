@@ -66,6 +66,17 @@ public class TestDataFactory {
         );
     }
 
+    public static ContactLombok validContactForAPI() {
+        return ContactLombok.builder()
+                .name(RandomUtils.generateFirstNameFromList())
+                .lastName(RandomUtils.generateLastNameFromList())
+                .phone(RandomUtils.generatePhoneNumber())
+                .email(RandomUtils.generateEmail(8))
+                .address(RandomUtils.generateAddressList())
+                .description(RandomUtils.generateDescription())
+                .build();
+    }
+
     private static ContactLombok.ContactLombokBuilder baseContact() {
         return ContactLombok.builder()
                 .name(RandomUtils.generateFirstNameFromList())
