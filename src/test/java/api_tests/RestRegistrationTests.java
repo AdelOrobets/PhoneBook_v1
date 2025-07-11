@@ -21,6 +21,8 @@ public class RestRegistrationTests extends AuthenticationController implements B
 
     private static final Logger logger = LoggerFactory.getLogger(RestRegistrationTests.class);
 
+    SoftAssert softAssert = new SoftAssert();
+
     private void logResponse(Response response) {
         String responseBody = response.getBody().asString();
         logger.info("[RESPONSE] Body:\n{}", responseBody);
@@ -47,7 +49,6 @@ public class RestRegistrationTests extends AuthenticationController implements B
         Response response = register_returnResponse(user);
         logResponse(response);
 
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 200, softAssert);
         TokenDto tokenDto = response.body().as(TokenDto.class);
         logger.info("[TOKEN]: {}", tokenDto);
@@ -63,7 +64,6 @@ public class RestRegistrationTests extends AuthenticationController implements B
         Response response = register_returnResponse(user);
         logResponse(response);
 
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 400, softAssert);
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
         logger.info("[ERROR MESSAGE]:\n{}", error);
@@ -80,7 +80,6 @@ public class RestRegistrationTests extends AuthenticationController implements B
         Response response = register_returnResponse(user);
         logResponse(response);
 
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 400, softAssert);
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
         logger.info("[ERROR MESSAGE]:\n{}", error);
@@ -112,7 +111,6 @@ public class RestRegistrationTests extends AuthenticationController implements B
         Response response = register_returnResponse(user);
         logResponse(response);
 
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 400, softAssert);
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
         logger.info("[ERROR MESSAGE]:\n{}", error);
@@ -129,7 +127,6 @@ public class RestRegistrationTests extends AuthenticationController implements B
         Response response = register_returnResponse(user);
         logResponse(response);
 
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 409, softAssert);
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
         softAssert.assertEquals(error.getError(), "Conflict");

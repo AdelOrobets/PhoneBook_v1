@@ -58,7 +58,6 @@ public class LoginPage extends BasePage {
         return new ContactsPage(driver);
     }
 
-
     public void fillCredentials(String email, String password) {
         enterEmail(email);
         enterPassword(password);

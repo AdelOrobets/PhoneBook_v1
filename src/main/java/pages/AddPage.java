@@ -2,6 +2,7 @@ package pages;
 
 import dto.ContactLombok;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -35,10 +36,10 @@ public class AddPage extends BasePage {
     @FindBy(xpath = "//input[@placeholder='Address']")
     WebElement inputAddress;
 
-    @FindBy(xpath = "//input[@placeholder='description']")
+    @FindBy(xpath = "//input[contains(@placeholder, 'desc')]")
     WebElement inputDescription;
 
-    @FindBy(xpath = "//b/.")
+    @FindBy(xpath = "//b[text()='Save'] | //button[text()='Save']")
     WebElement saveButton;
 
     public void fillContactForm(ContactLombok contact) {
@@ -79,6 +80,24 @@ public class AddPage extends BasePage {
         inputEmail.sendKeys(contact.getEmail());
         inputAddress.sendKeys(contact.getAddress());
         inputDescription.sendKeys(contact.getDescription());
+    }
+
+    public void clearContactForm() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(inputName));
+
+        clearFieldByKeys(inputName);
+        clearFieldByKeys(inputLastName);
+        clearFieldByKeys(inputPhone);
+        clearFieldByKeys(inputEmail);
+        clearFieldByKeys(inputAddress);
+        clearFieldByKeys(inputDescription);
+    }
+
+    private void clearFieldByKeys(WebElement element) {
+        element.click();
+        element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        element.sendKeys(Keys.DELETE);
     }
 }
 

@@ -19,12 +19,12 @@ public class RestDeleteAllContactTests extends ContactController {
 
     private static final Logger logger = LoggerFactory.getLogger(RestDeleteAllContactTests.class);
 
+    SoftAssert softAssert = new SoftAssert();
+
     private void logResponse(Response response) {
         logger.info("[RESPONSE] Status Code: {}", response.getStatusCode());
         logger.info("[RESPONSE] Body:\n{}", response.getBody().asString());
     }
-
-    SoftAssert softAssert = new SoftAssert();
 
     @Test(groups = {"smoke", "contacts"})
     public void deleteAllContactsTest() {

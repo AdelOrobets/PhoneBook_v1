@@ -23,8 +23,7 @@ dependencies {
 
     implementation 'io.rest-assured:rest-assured:4.5.1'
     implementation 'com.google.code.gson:gson:2.8.6'
-
-    implementation("io.rest-assured:json-schema-validator:3.0.0")
+    implementation 'io.rest-assured:json-schema-validator:3.0.0'
 }
 
 test {
@@ -43,9 +42,14 @@ task smoke_tests_api(type: Test) {
     }
 }
 
-task contacts_tests(type: Test) {
+task crossBrowser_addContact(type: Test) {
     useTestNG() {
-        suites 'src/test/resources/contacts_tests.xml'
+        suites 'src/test/resources/crossBrowser_addContact.xml'
     }
 }
 
+task test_edge_addNewContact(type: Test) {
+    useTestNG() {
+        suites 'src/test/resources/test_edge_addNewContact.xml'
+    }
+}

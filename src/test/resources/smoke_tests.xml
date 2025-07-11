@@ -10,6 +10,8 @@
             <class name="ui_tests.RegistrationTests"/>
             <class name="ui_tests.LoginTests"/>
             <class name="ui_tests.AddNewContactsTests"/>
+            <class name="ui_tests.EditContactTests"/>
+            <class name="ui_tests.DeleteContactsTests"/>
         </classes>
     </test>
 </suite>

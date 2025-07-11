@@ -20,6 +20,8 @@ public class RestUpdateContactTest extends ContactController {
 
     private static final Logger logger = LoggerFactory.getLogger(RestUpdateContactTest.class);
 
+    SoftAssert softAssert = new SoftAssert();
+
     private String createValidContactAndExtractId(ContactLombok contact) {
         Response response = addNewContactRequest(contact, tokenDto);
         return response.as(ResponseMessageDto.class).getMessage().split("ID: ")[1];
@@ -32,7 +34,6 @@ public class RestUpdateContactTest extends ContactController {
 
     private void validateBadRequest(Response response, String... expectedMessages) {
         logResponse(response);
-        SoftAssert softAssert = new SoftAssert();
 
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
         softAssert.assertEquals(response.getStatusCode(), 400, "Expected 400 Bad Request");
@@ -48,8 +49,6 @@ public class RestUpdateContactTest extends ContactController {
     // Positive Tests
     @Test(groups = {"smoke", "contacts"})
     public void updateContactPositiveTest() {
-        SoftAssert softAssert = new SoftAssert();
-
         ContactLombok contact = TestDataFactory.validContactForAPI();
         String id = createValidContactAndExtractId(contact);
 

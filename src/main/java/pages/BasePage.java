@@ -14,9 +14,11 @@ import java.time.Duration;
 
 public abstract class BasePage {
     protected WebDriver driver;
+    protected WebDriverWait wait;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 20), this);
     }
 
@@ -60,9 +62,9 @@ public abstract class BasePage {
         }
     }
 
-    protected boolean waitForVisibility(WebElement element, int timeoutSeconds) {
+    protected boolean waitForVisibility(WebElement element, int timeout) {
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds))
+            new WebDriverWait(driver, Duration.ofSeconds(timeout))
                     .until(ExpectedConditions.visibilityOf(element));
             return element.isDisplayed();
         } catch (TimeoutException e) {

@@ -1,0 +1,7 @@
+cd C:\QA47\Finaly\PhoneBook_v1   //from console - go to the root of the project
+
+.\gradlew clean smoke_tests_api
+.\gradlew clean smoke_tests
+
+.\gradlew clean crossBrowser_addContact
+.\gradlew clean test_edge_addNewContact

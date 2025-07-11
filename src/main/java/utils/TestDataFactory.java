@@ -57,7 +57,7 @@ public class TestDataFactory {
     // CONTACTS
     public static ContactLombok validContact() {
         return new ContactLombok(
-                null, // id
+                null,
                 RandomUtils.generateFirstNameFromList(),
                 RandomUtils.generateLastNameFromList(),
                 RandomUtils.generatePhoneNumber(),
@@ -112,7 +112,7 @@ public class TestDataFactory {
     }
 
     public static ContactLombok invalidEmailFormat() {
-        return baseContact().email("invalidEmailFormat").build();
+        return baseContact().email("invalidEmailForma@").build();
     }
 
     public static ContactLombok invalidPhoneFormat() {
@@ -140,5 +140,17 @@ public class TestDataFactory {
                 .address("!!! Address ???")
                 .description("### Description ***")
                 .build();
+    }
+
+    public static ContactLombok editedContact(ContactLombok original) {
+        return new ContactLombok(
+                original.getId(),
+                RandomUtils.generateFirstNameFromList(),
+                RandomUtils.generateLastNameFromList(),
+                RandomUtils.generatePhoneNumber(),
+                RandomUtils.generateEmail(8),
+                RandomUtils.generateAddressList(),
+                ""
+        );
     }
 }

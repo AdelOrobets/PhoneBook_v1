@@ -12,7 +12,7 @@
             <class name="api_tests.RestAddNewContactTests"/>
             <class name="api_tests.RestUpdateContactTest"/>
             <class name="api_tests.RestGetUserContactsTests"/>
-            <class name="api_tests.RestDeleteContactByID"/>
+            <class name="api_tests.RestDeleteContactByIDTests"/>
         </classes>
     </test>
 </suite>

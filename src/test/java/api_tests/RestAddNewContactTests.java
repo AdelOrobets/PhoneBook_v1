@@ -21,6 +21,8 @@ public class RestAddNewContactTests extends ContactController {
 
     private static final Logger logger = LoggerFactory.getLogger(RestAddNewContactTests.class);
 
+    SoftAssert softAssert = new SoftAssert();
+
     private void logResponse(Response response) {
         logger.info("[RESPONSE] Status Code: {}", response.getStatusCode());
         logger.info("[RESPONSE] Body:\n{}", response.getBody().asString());
@@ -44,7 +46,6 @@ public class RestAddNewContactTests extends ContactController {
         Response response = addNewContactRequest(contact, tokenDto);
         logResponse(response);
 
-        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(response.getStatusCode(), 200, "Expected 200 OK");
 
         if (response.getStatusCode() == 200) {
@@ -64,7 +65,6 @@ public class RestAddNewContactTests extends ContactController {
         Response response = addNewContactRequest(contact, wrongToken);
         logResponse(response);
 
-        SoftAssert softAssert = new SoftAssert();
         ErrorMessageDto error = response.as(ErrorMessageDto.class);
 
         softAssert.assertEquals(response.getStatusCode(), 401, "Expected 401 Unauthorized");

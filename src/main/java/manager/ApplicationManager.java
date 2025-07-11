@@ -2,14 +2,15 @@ package manager;
 
 import dto.UserLombok;
 import lombok.Getter;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import pages.*;
 import utils.HeaderMenuItem;
-
-import java.time.Duration;
 
 @Getter
 public class ApplicationManager {
@@ -22,11 +23,33 @@ public class ApplicationManager {
     public AddPage addPage;
     public UserLombok testUser;
 
-    public WebDriver initDriver() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(20));
-        return driver;
+    @BeforeMethod(alwaysRun = true)
+    @Parameters("browser")
+    public void setUpTest(@Optional("chrome") String browser) {
+        if (driver == null) {
+            driver = initDriver(browser.toLowerCase());
+            if (driver == null) {
+                throw new IllegalStateException("WebDriver was not initialized. " +
+                        "Browser may have failed to start.");
+            }
+        }
+    }
+
+    public WebDriver initDriver(String browser) {
+        try {
+            switch (browser) {
+                case "edge":
+                    System.setProperty("webdriver.edge.driver", "C:\\Tools\\msedgedriver.exe");
+                    return new EdgeDriver();
+                case "chrome":
+                default:
+                    System.setProperty("webdriver.chrome.driver", "C:\\Tools\\chromedriver.exe");
+                    return new ChromeDriver();
+            }
+        } catch (Exception e) {
+            System.err.println("Error during browser startup [" + browser + "]: " + e.getMessage());
+            return null;
+        }
     }
 
     public void openLoginPage() {
@@ -39,13 +62,6 @@ public class ApplicationManager {
 
     public void openAddPage() {
         addPage = contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
-    }
-
-    @BeforeMethod(alwaysRun = true)
-    public void setUpTest() {
-        if (driver == null) {
-            driver = initDriver();
-        }
     }
 
     @AfterMethod(alwaysRun = true)

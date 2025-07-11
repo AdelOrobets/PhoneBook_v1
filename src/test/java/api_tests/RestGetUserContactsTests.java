@@ -17,6 +17,8 @@ public class RestGetUserContactsTests extends ContactController {
 
     private static final Logger logger = LoggerFactory.getLogger(RestGetUserContactsTests.class);
 
+    SoftAssert softAssert = new SoftAssert();
+
     @Test(groups = {"smoke", "contacts"})
     public void getAllUserContactsPositiveTest() {
         Response response = getAllUserContacts();
@@ -30,7 +32,6 @@ public class RestGetUserContactsTests extends ContactController {
         ContactsDto contactsDto = response.body().as(ContactsDto.class);
         ContactLombok[] contactsArray = contactsDto.getContacts();
 
-        SoftAssert softAssert = new SoftAssert();
         softAssert.assertNotNull(contactsArray, "Contacts array should not be null");
         softAssert.assertTrue(contactsArray.length > 0, "Expected at least one contact");
 

@@ -22,6 +22,8 @@ public class RestDeleteContactByIDTests extends ContactController {
 
     private static final Logger logger = LoggerFactory.getLogger(RestDeleteContactByIDTests.class);
 
+    SoftAssert softAssert = new SoftAssert();
+
     private void logResponse(Response response) {
         logger.info("[RESPONSE] Status Code: {}", response.getStatusCode());
         logger.info("[RESPONSE] Body:\n{}", response.getBody().asString());
@@ -35,7 +37,6 @@ public class RestDeleteContactByIDTests extends ContactController {
     private void validateErrorResponse(Response response, int expectedStatusCode,
                                        String expectedError, String expectedMessagePart) {
         logResponse(response);
-        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(response.getStatusCode(), expectedStatusCode,
                 "Unexpected status code");
 

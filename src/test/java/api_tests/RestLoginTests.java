@@ -20,6 +20,8 @@ public class RestLoginTests extends AuthenticationController {
 
     private static final Logger logger = LoggerFactory.getLogger(RestLoginTests.class);
 
+    SoftAssert softAssert = new SoftAssert();
+
     private void assertStatusCode(Response response, int expectedCode, SoftAssert softAssert) {
         int statusCode = response.getStatusCode();
         logger.info("[RESPONSE] Status Code: {}", statusCode);
@@ -42,7 +44,6 @@ public class RestLoginTests extends AuthenticationController {
         register_void(user);
         Response response = login(user);
 
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 200, softAssert);
 
         TokenDto tokenDto = response.body().as(TokenDto.class);
@@ -57,7 +58,6 @@ public class RestLoginTests extends AuthenticationController {
         logger.info("Login user (wrong email): {}", user);
 
         Response response = login(user);
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 401, softAssert);
 
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
@@ -72,7 +72,6 @@ public class RestLoginTests extends AuthenticationController {
         logger.info("Login user (empty email): {}", user);
 
         Response response = login(user);
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 401, softAssert);
 
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
@@ -87,7 +86,6 @@ public class RestLoginTests extends AuthenticationController {
         logger.info("Login user (wrong password): {}", user);
 
         Response response = login(user);
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 401, softAssert);
 
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
@@ -102,7 +100,6 @@ public class RestLoginTests extends AuthenticationController {
         logger.info("Login user (empty password): {}", user);
 
         Response response = login(user);
-        SoftAssert softAssert = new SoftAssert();
         assertStatusCode(response, 401, softAssert);
 
         ErrorMessageDto error = response.body().as(ErrorMessageDto.class);
