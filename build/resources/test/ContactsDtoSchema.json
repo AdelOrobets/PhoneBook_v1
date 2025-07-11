@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContactsDto",
+  "type": "object",
+  "properties": {
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": {
+            "type": "string",
+            "pattern": "^[0-9]{10,15}$"
+          },
+          "address": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["id", "name", "lastName", "email", "phone"]
+      }
+    }
+  },
+  "required": ["contacts"]
+}
