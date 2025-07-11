@@ -30,3 +30,22 @@ dependencies {
 test {
     useTestNG()
 }
+
+task smoke_tests(type: Test) {
+    useTestNG() {
+        suites 'src/test/resources/smoke_tests.xml'
+    }
+}
+
+task smoke_tests_api(type: Test) {
+    useTestNG() {
+        suites 'src/test/resources/smoke_tests_api.xml'
+    }
+}
+
+task contacts_tests(type: Test) {
+    useTestNG() {
+        suites 'src/test/resources/contacts_tests.xml'
+    }
+}
+
