@@ -15,6 +15,7 @@ import java.util.Objects;
 
 public class ContactLombok {
 
+    private String id;
     private String name;
     private String lastName;
     private String phone;

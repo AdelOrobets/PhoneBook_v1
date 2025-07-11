@@ -41,14 +41,14 @@ public class ApplicationManager {
         addPage = contactsPage.clickHeaderMenuItem(HeaderMenuItem.ADD);
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUpTest() {
         if (driver == null) {
             driver = initDriver();
         }
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         if (driver != null) {
             driver.quit();

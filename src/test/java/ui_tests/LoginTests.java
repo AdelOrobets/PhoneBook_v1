@@ -27,7 +27,7 @@ public class LoginTests extends ApplicationManager {
                 "Login Form is not displayed");
     }
 
-    @Test(retryAnalyzer = utils.RetryAnalyzer.class)
+    @Test(retryAnalyzer = utils.RetryAnalyzer.class, groups = "smoke")
     public void testUserCanLoginAfterRegistration() {
         UserLombok validUser = userRegistration();
         openLoginPage();

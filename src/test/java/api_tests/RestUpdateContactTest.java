@@ -13,6 +13,8 @@ import org.testng.asserts.SoftAssert;
 import utils.TestDataFactory;
 import utils.TestNGListener;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+
 @Listeners(TestNGListener.class)
 public class RestUpdateContactTest extends ContactController {
 
@@ -44,12 +46,12 @@ public class RestUpdateContactTest extends ContactController {
     }
 
     // Positive Tests
-    @Test
+    @Test(groups = {"smoke", "contacts"})
     public void updateContactPositiveTest() {
         SoftAssert softAssert = new SoftAssert();
 
-        ContactLombok original = TestDataFactory.validContactForAPI();
-        String id = createValidContactAndExtractId(original);
+        ContactLombok contact = TestDataFactory.validContactForAPI();
+        String id = createValidContactAndExtractId(contact);
 
         ContactLombok updated = ContactLombok.builder()
                 .id(id)
@@ -62,12 +64,15 @@ public class RestUpdateContactTest extends ContactController {
                 .build();
 
         Response updateResponse = updateContactRequest(updated, tokenDto);
-        logResponse(updateResponse);
 
-        ResponseMessageDto updateMessage = updateResponse.as(ResponseMessageDto.class);
-        softAssert.assertEquals(updateResponse.getStatusCode(), 200,
-                "Contact update failed");
-        softAssert.assertTrue(updateMessage.getMessage().contains("Contact was updated"),
+        // Validating JSON structure schema
+        updateResponse.then()
+                .log().all()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("ResponseMessageDtoSchema.json"));
+
+        ResponseMessageDto messageDto = updateResponse.as(ResponseMessageDto.class);
+        softAssert.assertTrue(messageDto.getMessage().contains("Contact was updated"),
                 "Expected update confirmation message");
         softAssert.assertAll();
     }
@@ -98,6 +103,12 @@ public class RestUpdateContactTest extends ContactController {
         contact.setName("@123");
 
         Response response = updateContactRequest(contact, tokenDto);
+
+        response.then()
+                .log().ifValidationFails()
+                .statusCode(400)
+                .body(matchesJsonSchemaInClasspath("ResponseMessageDtoSchema.json"));
+
         validateBadRequest(response, "must be a well-formed name");
     }
 

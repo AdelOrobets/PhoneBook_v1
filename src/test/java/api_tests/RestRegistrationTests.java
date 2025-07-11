@@ -39,7 +39,7 @@ public class RestRegistrationTests extends AuthenticationController implements B
         softAssert.assertEquals(LocalDate.now().toString(), errorMessageDto.getTimestamp().substring(0, 10));
     }
 
-    @Test
+    @Test(groups = "smoke")
     public void registrationPositiveTest_200() {
         UserLombok user = TestDataFactory.validUser();
         logger.info("Registering new user: {}", user);

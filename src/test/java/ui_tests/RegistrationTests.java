@@ -12,10 +12,10 @@ import utils.TestDataFactory;
 import utils.TestNGListener;
 
 @Listeners(TestNGListener.class)
-public class RegistrationTest extends ApplicationManager {
+public class RegistrationTests extends ApplicationManager {
 
     // Positive tests
-    @Test
+    @Test(groups = "smoke")
     public void testSuccessfulRegistration() {
         UserLombok user = TestDataFactory.validUser();
         openLoginPage();

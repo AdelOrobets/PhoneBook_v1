@@ -57,6 +57,7 @@ public class TestDataFactory {
     // CONTACTS
     public static ContactLombok validContact() {
         return new ContactLombok(
+                null, // id
                 RandomUtils.generateFirstNameFromList(),
                 RandomUtils.generateLastNameFromList(),
                 RandomUtils.generatePhoneNumber(),

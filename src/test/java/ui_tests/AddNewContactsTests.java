@@ -18,7 +18,7 @@ public class AddNewContactsTests extends ApplicationManager {
 
     private static final Logger logger = LoggerFactory.getLogger(AddNewContactsTests.class);
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void registrationUser() {
         UserLombok user = TestDataFactory.validUser();
         openLoginPage();
@@ -26,7 +26,7 @@ public class AddNewContactsTests extends ApplicationManager {
     }
 
     // Positive tests
-    @Test
+    @Test(groups = "smoke")
     public void testSuccessful_addNewContact() {
         contactsPage = new ContactsPage(driver);
         int sizeBeforeAdd = contactsPage.getContactsListSize();

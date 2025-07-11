@@ -34,7 +34,7 @@ public class RestLoginTests extends AuthenticationController {
         softAssert.assertEquals(LocalDate.now().toString(), errorMessageDto.getTimestamp().substring(0, 10));
     }
 
-    @Test
+    @Test(groups = "smoke")
     public void loginPositiveTest_200() {
         UserLombok user = TestDataFactory.validUser();
         logger.info("Login new user: {}", user);
