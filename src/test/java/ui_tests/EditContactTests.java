@@ -39,7 +39,7 @@ public class EditContactTests extends ApplicationManager {
     }
 
     // Positive Tests
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "regression"})
     public void testEditContactByName() {
         ContactLombok contact = addContact();
         String name = contact.getName();

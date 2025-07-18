@@ -36,7 +36,7 @@ public class RestLoginTests extends AuthenticationController {
         softAssert.assertEquals(LocalDate.now().toString(), errorMessageDto.getTimestamp().substring(0, 10));
     }
 
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "regression"})
     public void loginPositiveTest_200() {
         UserLombok user = TestDataFactory.validUser();
         logger.info("Login new user: {}", user);
@@ -52,7 +52,7 @@ public class RestLoginTests extends AuthenticationController {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_wrongEmail_401() {
         UserLombok user = TestDataFactory.invalidEmailNoAtSymbol();
         logger.info("Login user (wrong email): {}", user);
@@ -66,7 +66,7 @@ public class RestLoginTests extends AuthenticationController {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_emptyEmail_401() {
         UserLombok user = TestDataFactory.userWithoutEmail();
         logger.info("Login user (empty email): {}", user);
@@ -80,7 +80,7 @@ public class RestLoginTests extends AuthenticationController {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_wrongPassword_401() {
         UserLombok user = TestDataFactory.invalidPasswordNoSymbol();
         logger.info("Login user (wrong password): {}", user);
@@ -94,7 +94,7 @@ public class RestLoginTests extends AuthenticationController {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_emptyPassword_401() {
         UserLombok user = TestDataFactory.userWithoutPassword();
         logger.info("Login user (empty password): {}", user);

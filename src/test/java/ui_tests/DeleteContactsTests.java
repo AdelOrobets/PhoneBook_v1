@@ -40,7 +40,7 @@ public class DeleteContactsTests extends ApplicationManager {
     }
 
     // Positive tests
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "regression"})
     public void testDeleteContactByName() {
         ContactLombok contact = addContact();
         String name = contact.getName();
@@ -54,7 +54,7 @@ public class DeleteContactsTests extends ApplicationManager {
     }
 
     // Negative tests
-    @Test
+    @Test(groups = "regression")
     public void testDeleteContact_withInvalidName() {
         ContactLombok contact = addContact();
         String invalidName = "invalidName";

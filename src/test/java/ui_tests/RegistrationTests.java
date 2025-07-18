@@ -15,7 +15,7 @@ import utils.TestNGListener;
 public class RegistrationTests extends ApplicationManager {
 
     // Positive tests
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "regression"})
     public void testSuccessfulRegistration() {
         UserLombok user = TestDataFactory.validUser();
         openLoginPage();
@@ -35,7 +35,7 @@ public class RegistrationTests extends ApplicationManager {
     }
 
     // Negative tests
-    @Test
+    @Test(groups = "regression")
     public void testNegative_UserAlreadyExist() {
         // create new user
         UserLombok user = TestDataFactory.validUser();
@@ -47,19 +47,19 @@ public class RegistrationTests extends ApplicationManager {
         registrationAndAssertFailure(user);
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testNegative_emptyUsername() {
         UserLombok invalidUser = TestDataFactory.userWithoutEmail();
         registrationAndAssertFailure(invalidUser);
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testNegative_emptyPassword() {
         UserLombok invalidUser = TestDataFactory.userWithoutPassword();
         registrationAndAssertFailure(invalidUser);
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testNegative_invalidUsernameFormat() {
         UserLombok invalidUser = TestDataFactory.invalidEmailNoAtSymbol();
         registrationAndAssertFailure(invalidUser);
@@ -72,19 +72,19 @@ public class RegistrationTests extends ApplicationManager {
      * Actual: Registration succeeds with an invalid email
      * This test demonstrates that the email validation logic does not correctly enforce domain formatting.
      */
-    @Test
+    @Test(groups = "regression")
     public void testNegative_invalidUsernameDomain() {
         UserLombok invalidUser = TestDataFactory.invalidEmailNoDomain();
         registrationAndAssertFailure(invalidUser);
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testNegative_invalidUsername_withSpace() {
         UserLombok invalidUser = TestDataFactory.invalidEmailWithSpace();
         registrationAndAssertFailure(invalidUser);
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testNegative_invalidPasswordShort() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordTooShort();
         registrationAndAssertFailure(invalidUser);
@@ -96,19 +96,19 @@ public class RegistrationTests extends ApplicationManager {
      * Expected: Registration should fail when password length > 15.
      * Actual: Registration succeeds with password length > 15.
      */
-    @Test
+    @Test(groups = "regression")
     public void testNegative_invalidPasswordLong() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordTooLong();
         registrationAndAssertFailure(invalidUser);
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testNegative_invalidPasswordNoDigit() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordNoDigit();
         registrationAndAssertFailure(invalidUser);
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testNegative_invalidPasswordNoSymbol() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordNoSymbol();
         registrationAndAssertFailure(invalidUser);

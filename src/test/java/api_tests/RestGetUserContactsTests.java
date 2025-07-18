@@ -19,7 +19,7 @@ public class RestGetUserContactsTests extends ContactController {
 
     SoftAssert softAssert = new SoftAssert();
 
-    @Test(groups = {"smoke", "contacts"})
+    @Test(groups = {"smoke", "regression"})
     public void getAllUserContactsPositiveTest() {
         Response response = getAllUserContacts();
 

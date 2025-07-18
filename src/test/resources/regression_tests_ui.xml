@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="UI Regression Suite" verbose="1">
+    <test name="regression_tests_ui">
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="ui_tests.RegistrationTests"/>
+            <class name="ui_tests.LoginTests"/>
+            <class name="ui_tests.AddNewContactsTests"/>
+            <class name="ui_tests.EditContactTests"/>
+            <class name="ui_tests.DeleteContactsTests"/>
+        </classes>
+    </test>
+</suite>

@@ -41,7 +41,7 @@ public class RestRegistrationTests extends AuthenticationController implements B
         softAssert.assertEquals(LocalDate.now().toString(), errorMessageDto.getTimestamp().substring(0, 10));
     }
 
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "regression"})
     public void registrationPositiveTest_200() {
         UserLombok user = TestDataFactory.validUser();
         logger.info("Registering new user: {}", user);
@@ -56,7 +56,7 @@ public class RestRegistrationTests extends AuthenticationController implements B
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void registrationNegativeTest_wrongEmail_400() {
         UserLombok user = TestDataFactory.invalidEmailNoAtSymbol();
         logger.info("Registering new user (wrong email): {}", user);
@@ -72,7 +72,7 @@ public class RestRegistrationTests extends AuthenticationController implements B
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void registrationNegativeTest_emptyEmail_400() {
         UserLombok user = TestDataFactory.userWithoutEmail();
         logger.info("Registering new user (empty email): {}", user);
@@ -103,7 +103,7 @@ public class RestRegistrationTests extends AuthenticationController implements B
     // Actual response:
     // timestamp=1751992757573, status=400, error=Bad Request, message=null,
     // path=/v1/user/registration/usernamepassword)
-    @Test
+    @Test(groups = "regression")
     public void registrationNegativeTest_emptyPassword_400() {
         UserLombok user = TestDataFactory.userWithoutPassword();
         logger.info("Registering new user (empty password): {}", user);
@@ -118,7 +118,7 @@ public class RestRegistrationTests extends AuthenticationController implements B
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void registrationNegativeTest_userAlreadyExists_409() {
         UserLombok user = TestDataFactory.validUser();
         logger.info("Registering user Already Exists: {}", user);

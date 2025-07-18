@@ -26,7 +26,7 @@ public class RestDeleteAllContactTests extends ContactController {
         logger.info("[RESPONSE] Body:\n{}", response.getBody().asString());
     }
 
-    @Test(groups = {"smoke", "contacts"})
+    @Test(groups = {"smoke", "regression"})
     public void deleteAllContactsTest() {
         for (int i = 0; i < 3; i++) {
             ContactLombok contact = TestDataFactory.validContactForAPI();

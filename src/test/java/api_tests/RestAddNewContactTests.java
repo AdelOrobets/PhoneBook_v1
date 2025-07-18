@@ -40,7 +40,7 @@ public class RestAddNewContactTests extends ContactController {
     }
 
     // Positive Tests
-    @Test(retryAnalyzer = utils.RetryAnalyzer.class, groups = {"smoke", "contacts"})
+    @Test(retryAnalyzer = utils.RetryAnalyzer.class, groups = {"smoke", "regression"})
     public void addNewContactPositiveTest() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         Response response = addNewContactRequest(contact, tokenDto);
@@ -57,7 +57,7 @@ public class RestAddNewContactTests extends ContactController {
     }
 
     // Negative Tests
-    @Test
+    @Test(groups = "regression")
     public void addNewContactNegativeTest_wrongToken() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         TokenDto wrongToken = TokenDto.builder().token("wrong").build();
@@ -76,7 +76,7 @@ public class RestAddNewContactTests extends ContactController {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void addNewContactNegativeTest_withEmptyFields() {
         ContactLombok contact = TestDataFactory.allFieldsEmpty();
         Response response = addNewContactRequest(contact, tokenDto);
@@ -86,7 +86,7 @@ public class RestAddNewContactTests extends ContactController {
     }
 
     // BUG: server successfully updates contact with Invalid Name "@123"
-    @Test
+    @Test(groups = "regression")
     public void addNewContactNegativeTest_withInvalidName() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         contact.setName("@123");
@@ -96,7 +96,7 @@ public class RestAddNewContactTests extends ContactController {
                 "must be a well-formed name");
     }
 
-    @Test
+    @Test(groups = "regression")
     public void addNewContactNegativeTest_withInvalidPhoneLetter() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         contact.setPhone("12345a7890");
@@ -106,7 +106,7 @@ public class RestAddNewContactTests extends ContactController {
                 "Phone number must contain only digits!");
     }
 
-    @Test
+    @Test(groups = "regression")
     public void addNewContactNegativeTest_withInvalidLengthPhone() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         contact.setPhone("123456");  // меньше 10 символов

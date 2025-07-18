@@ -10,6 +10,13 @@
         </classes>
     </test>
 
+    <test name="Firefox - Add Contact">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="ui_tests.AddNewContactsTests"/>
+        </classes>
+    </test>
+
     <test name="Edge - Add Contact">
         <parameter name="browser" value="edge"/>
         <classes>

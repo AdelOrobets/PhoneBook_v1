@@ -26,7 +26,7 @@ public class AddNewContactsTests extends ApplicationManager {
     }
 
     // Positive tests
-    @Test(groups = "smoke")
+    @Test(groups = {"smoke", "regression"})
     public void testSuccessful_addNewContact() {
         contactsPage = new ContactsPage(driver);
         int sizeBeforeAdd = contactsPage.getContactsListSize();
@@ -61,7 +61,7 @@ public class AddNewContactsTests extends ApplicationManager {
 
 
     // Negative tests
-    @Test
+    @Test(groups = "regression")
     public void testAddNewContactS_AllFieldsEmpty(){
         ContactLombok contact = TestDataFactory.allFieldsEmpty();
         contactsPage = new ContactsPage(driver);
@@ -71,7 +71,7 @@ public class AddNewContactsTests extends ApplicationManager {
     }
 
     // BUG: no error message and Save button is not clickable if the Name field is left blank
-    @Test
+    @Test(groups = "regression")
     public void testAddContact_WithoutName() {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutName();
         contactsPage = new ContactsPage(driver);
@@ -83,7 +83,7 @@ public class AddNewContactsTests extends ApplicationManager {
     }
 
     // BUG: no error message and Save button is not clickable if the Last name field is left blank
-    @Test
+    @Test(groups = "regression")
     public void testAddContact_WithoutLastName() {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutLastName();
         contactsPage = new ContactsPage(driver);
@@ -94,7 +94,7 @@ public class AddNewContactsTests extends ApplicationManager {
                 "Expected error message for missing last name");
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testAddContactWithoutPhone() {
         ContactLombok contact = TestDataFactory.invalidFieldWithoutPhone();
         contactsPage = new ContactsPage(driver);
@@ -105,7 +105,7 @@ public class AddNewContactsTests extends ApplicationManager {
                 "Expected error message for missing phone");
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testAddContactWithInvalidEmailFormat() {
         ContactLombok contact = TestDataFactory.invalidEmailFormat();
         contactsPage = new ContactsPage(driver);
@@ -116,7 +116,7 @@ public class AddNewContactsTests extends ApplicationManager {
                 "Expected error message for invalid email format");
     }
 
-    @Test
+    @Test(groups = "regression")
     public void testAddContactWithInvalidPhoneFormat() {
         ContactLombok contact = TestDataFactory.invalidPhoneFormat();
         contactsPage = new ContactsPage(driver);
@@ -128,7 +128,7 @@ public class AddNewContactsTests extends ApplicationManager {
     }
 
     //BUG: Incorrect error message --> Phone not valid
-    @Test
+    @Test(groups = "regression")
     public void testAddContactWithTooLongFields() {
         ContactLombok contact = TestDataFactory.tooLongFields();
         contactsPage = new ContactsPage(driver);
@@ -140,7 +140,7 @@ public class AddNewContactsTests extends ApplicationManager {
     }
 
     //BUG: Incorrect error message --> Email not valid, Phone not valid
-    @Test
+    @Test(groups = "regression")
     public void testAddContactWithSpecialCharacters() {
         ContactLombok contact = TestDataFactory.invalidFieldsWithSpecialCharacters();
         contactsPage = new ContactsPage(driver);

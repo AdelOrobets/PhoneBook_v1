@@ -48,7 +48,7 @@ public class RestDeleteContactByIDTests extends ContactController {
     }
 
     // Positive Test
-    @Test(groups = {"smoke", "contacts"})
+    @Test(groups = {"smoke", "regression"})
     public void deleteContactByIDPositiveTest200() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         String id = extractContactId(contact);
@@ -78,7 +78,7 @@ public class RestDeleteContactByIDTests extends ContactController {
      *
      * This behavior violates standard REST API authentication practices
      */
-    @Test
+    @Test(groups = "regression")
     public void deleteContactWithoutTokenNegativeTest401() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         String id = extractContactId(contact);
@@ -112,7 +112,7 @@ public class RestDeleteContactByIDTests extends ContactController {
      * Actual:
      *   - HTTP status: 400 Bad Request
      */
-    @Test
+    @Test(groups = "regression")
     public void deleteNonExistingContactNegativeTest404() {
         String invalidId = "1234567890abcdef123456789";
         Response response = deleteContactByIdRequest(invalidId, tokenDto);

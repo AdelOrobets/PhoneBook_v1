@@ -20,6 +20,7 @@ public class LoginTests extends ApplicationManager {
         return user;
     }
 
+    // Positive Tests
     @Test
     public void testLoginFormDisplayed() {
         openLoginPage();
@@ -27,7 +28,7 @@ public class LoginTests extends ApplicationManager {
                 "Login Form is not displayed");
     }
 
-    @Test(retryAnalyzer = utils.RetryAnalyzer.class, groups = "smoke")
+    @Test(retryAnalyzer = utils.RetryAnalyzer.class, groups = {"smoke", "regression"})
     public void testUserCanLoginAfterRegistration() {
         UserLombok validUser = userRegistration();
         openLoginPage();
@@ -52,7 +53,7 @@ public class LoginTests extends ApplicationManager {
      * Email addresses should be treated as case-insensitive.
      * Actual: Login fails if the email address casing does not exactly match the registered casing.
      */
-    @Test(retryAnalyzer = utils.RetryAnalyzer.class)
+    @Test(retryAnalyzer = utils.RetryAnalyzer.class, groups = ("regression"))
     public void testUserLogin_uppercaseEmail() {
         UserLombok validUser = userRegistration();
         String upperCaseEmail = validUser.getUsername().toUpperCase();
@@ -71,7 +72,7 @@ public class LoginTests extends ApplicationManager {
     }
 
     // Negative tests
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_unregisteredUser() {
         UserLombok unregisteredUser = TestDataFactory.validUser();
         openLoginPage();
@@ -79,7 +80,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_wrongPassword() {
         UserLombok validUser = userRegistration();
         String validEmail = validUser.getUsername();
@@ -90,7 +91,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_emptyUsername() {
         UserLombok invalidUser = TestDataFactory.userWithoutEmail();
         openLoginPage();
@@ -98,7 +99,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_emptyPassword() {
         UserLombok invalidUser = TestDataFactory.userWithoutPassword();
         openLoginPage();
@@ -106,7 +107,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_invalidUsernameFormat() {
         UserLombok invalidUser = TestDataFactory.invalidEmailNoAtSymbol();
         openLoginPage();
@@ -114,7 +115,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_invalidUsernameDomain() {
         UserLombok invalidUser = TestDataFactory.invalidEmailNoDomain();
         openLoginPage();
@@ -122,7 +123,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_invalidUsername_withSpace() {
         UserLombok invalidUser = TestDataFactory.invalidEmailWithSpace();
         openLoginPage();
@@ -130,7 +131,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_invalidPasswordShort() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordTooShort();
         openLoginPage();
@@ -138,7 +139,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_invalidPasswordLong() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordTooLong();
         openLoginPage();
@@ -146,7 +147,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_invalidPasswordNoDigit() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordNoDigit();
         openLoginPage();
@@ -154,7 +155,7 @@ public class LoginTests extends ApplicationManager {
         closeAlertAndAssertFailure();
     }
 
-    @Test
+    @Test(groups = "regression")
     public void loginNegativeTest_invalidPasswordNoSymbol() {
         UserLombok invalidUser = TestDataFactory.invalidPasswordNoSymbol();
         openLoginPage();

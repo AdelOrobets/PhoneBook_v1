@@ -47,7 +47,7 @@ public class RestUpdateContactTest extends ContactController {
     }
 
     // Positive Tests
-    @Test(groups = {"smoke", "contacts"})
+    @Test(groups = {"smoke", "regression"})
     public void updateContactPositiveTest() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         String id = createValidContactAndExtractId(contact);
@@ -77,7 +77,7 @@ public class RestUpdateContactTest extends ContactController {
     }
 
     // Negative Tests
-    @Test
+    @Test(groups = "regression")
     public void updateContactNegativeTest_nullId() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         contact.setId(null);
@@ -86,7 +86,7 @@ public class RestUpdateContactTest extends ContactController {
         validateBadRequest(response, "must not be blank");
     }
 
-    @Test
+    @Test(groups = "regression")
     public void updateContactNegativeTest_withEmptyFields() {
         ContactLombok contact = TestDataFactory.allFieldsEmpty();
 
@@ -95,7 +95,7 @@ public class RestUpdateContactTest extends ContactController {
     }
 
     // BUG: server successfully updates contact with Invalid Name "@123"
-    @Test
+    @Test(groups = "regression")
     public void updateContactNegativeTest_withInvalidName() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         contact.setId(createValidContactAndExtractId(contact));
@@ -111,7 +111,7 @@ public class RestUpdateContactTest extends ContactController {
         validateBadRequest(response, "must be a well-formed name");
     }
 
-    @Test
+    @Test(groups = "regression")
     public void updateContactNegativeTest_withInvalidPhoneLetter() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         contact.setId(createValidContactAndExtractId(contact));
@@ -121,7 +121,7 @@ public class RestUpdateContactTest extends ContactController {
         validateBadRequest(response, "Phone number must contain only digits!");
     }
 
-    @Test
+    @Test(groups = "regression")
     public void updateContactNegativeTest_withInvalidLengthPhone() {
         ContactLombok contact = TestDataFactory.validContactForAPI();
         contact.setId(createValidContactAndExtractId(contact));
