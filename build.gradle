@@ -10,46 +10,52 @@ repositories {
 }
 
 dependencies {
+    // Selenium & TestNG
     implementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
     implementation 'org.testng:testng:7.11.0'
 
+    // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 
+    // Logging
     implementation 'org.slf4j:slf4j-api:2.0.9'
     implementation 'ch.qos.logback:logback-classic:1.5.18'
 
+    // REST API testing
     implementation 'io.rest-assured:rest-assured:4.5.1'
-    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'io.rest-assured:json-schema-validator:3.0.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    // Allure
+    testImplementation 'io.qameta.allure:allure-testng:2.24.0'
 }
 
 test {
     useTestNG()
-}
-
-task smoke_tests(type: Test) {
-    useTestNG() {
-        suites 'src/test/resources/smoke_tests.xml'
+    systemProperty 'allure.results.directory', 'build/allure-results'
+    testLogging {
+        events "passed", "skipped", "failed"
     }
 }
 
-task smoke_tests_api(type: Test) {
-    useTestNG() {
-        suites 'src/test/resources/smoke_tests_api.xml'
-    }
-}
+// Custom Test Tasks
+def testTasks = [
+        smoke_tests_ui            : 'src/test/resources/smoke_tests_ui.xml',
+        smoke_tests_api           : 'src/test/resources/smoke_tests_api.xml',
+        regression_tests_api      : 'src/test/resources/regression_tests_api.xml',
+        regression_tests_ui       : 'src/test/resources/regression_tests_ui.xml',
+        crossBrowser_addContact   : 'src/test/resources/crossBrowser_addContact.xml',
+        test_edge_addNewContact   : 'src/test/resources/test_edge.xml'
+]
 
-task crossBrowser_addContact(type: Test) {
-    useTestNG() {
-        suites 'src/test/resources/crossBrowser_addContact.xml'
-    }
-}
-
-task test_edge_addNewContact(type: Test) {
-    useTestNG() {
-        suites 'src/test/resources/test_edge_addNewContact.xml'
+testTasks.each { taskName, suitePath ->
+    tasks.register(taskName, Test) {
+        useTestNG() {
+            suites suitePath
+        }
+        systemProperty 'allure.results.directory', "build/allure-results/${taskName}"
     }
 }

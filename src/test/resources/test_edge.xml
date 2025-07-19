@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Edge Suite" parallel="false">
     <parameter name="browser" value="edge"/>
-    <test name="Add_Edit_Delete Contact in Edge">
+    <test name="test_edge_addNewContact">
         <classes>
             <class name="ui_tests.AddNewContactsTests"/>
             <class name="ui_tests.EditContactTests"/>
