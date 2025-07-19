@@ -36,7 +36,42 @@ dependencies {
 test {
     useTestNG()
     systemProperty 'allure.results.directory', 'build/allure-results'
-    finalizedBy 'generateAllureReport'
+}
+
+task writeAllureEnvironment {
+    doLast {
+        def envFile = file("$buildDir/allure-results/environment.properties")
+        def browser = System.getProperty('browser', 'chrome')
+        def device = System.getProperty('device', 'desktop')
+
+        envFile.text = """
+        Browser=${browser}
+        Device=${device}
+        """.stripIndent().trim()
+    }
+}
+
+// Allure report
+task generateAllureReport(type: Exec) {
+    description = 'Generate and open Allure report'
+    group = 'verification'
+
+    def allureHome = System.getenv("ALLURE_HOME")
+    if (allureHome == null) {
+        throw new GradleException("ALLURE_HOME is not set")
+    }
+
+    def allureExecutable = "${allureHome}\\bin\\allure.bat"
+    def resultsDir = "build/allure-results"
+    def reportDir = "build/allure-report"
+
+    commandLine allureExecutable, "generate", resultsDir, "--clean", "-o", reportDir
+
+    doLast {
+        exec {
+            commandLine allureExecutable, "open", reportDir
+        }
+    }
 }
 
 def testTasks = [
@@ -50,28 +85,18 @@ def testTasks = [
 
 testTasks.each { taskName, suitePath ->
     tasks.register(taskName, Test) {
-        useTestNG() {
+        useTestNG {
             suites suitePath
         }
-        systemProperty 'allure.results.directory', "build/allure-results/${taskName}"
-        finalizedBy 'generateAllureReport'
+        systemProperty 'browser', System.getProperty('browser', 'chrome')
+        systemProperty 'device', System.getProperty('device', 'desktop')
+        systemProperty 'allure.results.directory', 'build/allure-results'
 
-        testClassesDirs = sourceSets.test.output.classesDirs
-        classpath = sourceSets.test.runtimeClasspath
+        dependsOn writeAllureEnvironment
     }
-}
 
-task generateAllureReport(type: Exec) {
-    description = 'Generation Allure report'
-    group = 'verification'
-
-    def allureHome = System.getenv("ALLURE_HOME")
-    if (allureHome == null) {
-        throw new GradleException("ALLURE_HOME is not set")
+    tasks.register("${taskName}_with_report") {
+        dependsOn taskName
+        finalizedBy generateAllureReport
     }
-    def allureExecutable = "${allureHome}/bin/allure.bat"
-    def resultsDir = "build/allure-results"
-    def reportDir = "build/allure-report"
-
-    commandLine allureExecutable, "generate", resultsDir, "--clean", "-o", reportDir
 }
