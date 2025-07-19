@@ -1,14 +1,19 @@
 cd C:\QA47\Finaly\PhoneBook_v1   //from console - go to the root of the project
 
-$env:ALLURE_HOME="C:\Tools\allure-2.34.1"
-.\gradlew clean smoke_tests_api
-.\gradlew clean smoke_tests_ui
+// All tests and allure
+./gradlew testWithAllure
 
-.\gradlew generateAllureReport
+./gradlew smoke_tests_ui_with_report
+./gradlew smoke_tests_ui_with_report -Dbrowser=edge
+
+./gradlew smoke_tests_api_with_report
+
+
+./gradlew regression_tests_ui_with_report
+./gradlew regression_tests_ui_with_report -Dbrowser=edge
+
+./gradlew regression_tests_api_with_report
+
+allure generate build/allure-results --clean -o build/allure-report
+allure open build/allure-report
 C:\QA47\Finaly\PhoneBook_v1\build\allure-report\index.html
-
-.\gradlew clean regression_tests_api
-.\gradlew clean regression_tests_ui
-
-.\gradlew clean crossBrowser_addContact
-.\gradlew clean test_edge_addNewContact
