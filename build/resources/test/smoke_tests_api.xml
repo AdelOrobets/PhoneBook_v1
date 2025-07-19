@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="suite1" verbose="1">
-    <test name="smoke_tests">
+<suite name="API Smoke Suite" verbose="1">
+    <test name="smoke_tests_api">
         <groups>
             <run>
                 <include name="smoke"/>
@@ -13,6 +13,7 @@
             <class name="api_tests.RestUpdateContactTest"/>
             <class name="api_tests.RestGetUserContactsTests"/>
             <class name="api_tests.RestDeleteContactByIDTests"/>
+            <class name="api_tests.RestDeleteAllContactTests"/>
         </classes>
     </test>
 </suite>
