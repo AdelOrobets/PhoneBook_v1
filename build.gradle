@@ -26,7 +26,7 @@ dependencies {
 
     // REST API testing
     implementation 'io.rest-assured:rest-assured:4.5.1'
-    implementation 'io.rest-assured:json-schema-validator:3.0.0'
+    implementation 'io.rest-assured:json-schema-validator:4.5.1'
     implementation 'com.google.code.gson:gson:2.8.6'
 
     // Allure
@@ -36,19 +36,16 @@ dependencies {
 test {
     useTestNG()
     systemProperty 'allure.results.directory', 'build/allure-results'
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
+    finalizedBy 'generateAllureReport'
 }
 
-// Custom Test Tasks
 def testTasks = [
-        smoke_tests_ui            : 'src/test/resources/smoke_tests_ui.xml',
-        smoke_tests_api           : 'src/test/resources/smoke_tests_api.xml',
-        regression_tests_api      : 'src/test/resources/regression_tests_api.xml',
-        regression_tests_ui       : 'src/test/resources/regression_tests_ui.xml',
-        crossBrowser_addContact   : 'src/test/resources/crossBrowser_addContact.xml',
-        test_edge_addNewContact   : 'src/test/resources/test_edge.xml'
+        smoke_tests_api          : 'src/test/resources/smoke_tests_api.xml',
+        smoke_tests_ui           : 'src/test/resources/smoke_tests_ui.xml',
+        regression_tests_api     : 'src/test/resources/regression_tests_api.xml',
+        regression_tests_ui      : 'src/test/resources/regression_tests_ui.xml',
+        crossBrowser_addContact  : 'src/test/resources/crossBrowser_addContact.xml',
+        test_edge_addNewContact  : 'src/test/resources/test_edge.xml'
 ]
 
 testTasks.each { taskName, suitePath ->
@@ -57,5 +54,24 @@ testTasks.each { taskName, suitePath ->
             suites suitePath
         }
         systemProperty 'allure.results.directory', "build/allure-results/${taskName}"
+        finalizedBy 'generateAllureReport'
+
+        testClassesDirs = sourceSets.test.output.classesDirs
+        classpath = sourceSets.test.runtimeClasspath
     }
+}
+
+task generateAllureReport(type: Exec) {
+    description = 'Generation Allure report'
+    group = 'verification'
+
+    def allureHome = System.getenv("ALLURE_HOME")
+    if (allureHome == null) {
+        throw new GradleException("ALLURE_HOME is not set")
+    }
+    def allureExecutable = "${allureHome}/bin/allure.bat"
+    def resultsDir = "build/allure-results"
+    def reportDir = "build/allure-report"
+
+    commandLine allureExecutable, "generate", resultsDir, "--clean", "-o", reportDir
 }

@@ -1,7 +1,11 @@
 cd C:\QA47\Finaly\PhoneBook_v1   //from console - go to the root of the project
 
+$env:ALLURE_HOME="C:\Tools\allure-2.34.1"
 .\gradlew clean smoke_tests_api
 .\gradlew clean smoke_tests_ui
+
+.\gradlew generateAllureReport
+C:\QA47\Finaly\PhoneBook_v1\build\allure-report\index.html
 
 .\gradlew clean regression_tests_api
 .\gradlew clean regression_tests_ui
