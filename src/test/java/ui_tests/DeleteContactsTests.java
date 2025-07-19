@@ -4,8 +4,7 @@ import dto.ContactLombok;
 import dto.UserLombok;
 import manager.ApplicationManager;
 import org.openqa.selenium.WebElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
@@ -15,14 +14,11 @@ import pages.*;
 import utils.TestDataFactory;
 import utils.TestNGListener;
 
+import java.time.Duration;
 import java.util.List;
 
 @Listeners(TestNGListener.class)
 public class DeleteContactsTests extends ApplicationManager {
-
-    private static final Logger logger = LoggerFactory.getLogger(DeleteContactsTests.class);
-
-    SoftAssert softAssert = new SoftAssert();
 
     @BeforeMethod(alwaysRun = true)
     public void registrationUser() {
@@ -42,15 +38,22 @@ public class DeleteContactsTests extends ApplicationManager {
     // Positive tests
     @Test(groups = {"smoke", "regression"})
     public void testDeleteContactByName() {
+        SoftAssert softAssert = new SoftAssert();
+
         ContactLombok contact = addContact();
         String name = contact.getName();
-        List<WebElement> contacts = contactsPage.getContactElements();
+        List<WebElement> initialContacts = contactsPage.getContactElements();
+        softAssert.assertTrue(contactsPage.isContactPresentInList(name, initialContacts),
+                "Contact is not present before deletion");
 
-        Assert.assertTrue(contactsPage.isContactPresentInList(name, contacts),
-                "Contact is present before deletion");
         contactsPage.deleteContactByName(name);
-        Assert.assertTrue(contactsPage.isContactAbsentByName(name, contacts),
-                "Contact should be deleted");
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver ->
+                !contactsPage.isContactPresentInList(name, contactsPage.getContactElements()));
+
+        List<WebElement> updatedContacts = contactsPage.getContactElements();
+        softAssert.assertFalse(contactsPage.isContactPresentInList(name, updatedContacts),
+                "Contact was not deleted");
+        softAssert.assertAll();
     }
 
     // Negative tests
@@ -62,7 +65,6 @@ public class DeleteContactsTests extends ApplicationManager {
 
         Assert.assertFalse(contactsPage.isContactPresentInList(invalidName, contactsBefore),
                 "Contact with invalid name is unexpectedly present");
-
 
         boolean deleted = contactsPage.deleteContactByInvalidName(invalidName);
         Assert.assertFalse(deleted, "Contact with invalid name was deleted");

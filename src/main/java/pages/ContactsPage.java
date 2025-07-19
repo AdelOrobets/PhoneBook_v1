@@ -72,7 +72,7 @@ public class ContactsPage extends BasePage {
         });
 
         if (!found) {
-            logger.warn("Contact with name '{}' was not found and No deletion performed", name);
+            logger.warn("Contact with name '{}' was not found", name);
             return false;
         }
 
@@ -84,9 +84,16 @@ public class ContactsPage extends BasePage {
     }
 
     public List<WebElement> getContactElements() {
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-                By.xpath("//div[@class='contact-item_card__2SOIM']")
-        ));
+        try {
+            wait.until(ExpectedConditions.or(
+                    ExpectedConditions.presenceOfAllElementsLocatedBy
+                            (By.xpath("//div[@class='contact-item_card__2SOIM']")),
+                    ExpectedConditions.presenceOfElementLocated
+                            (By.xpath("//h1[contains(text(), 'No Contacts here!')]"))
+            ));
+        } catch (Exception e) {
+            logger.warn("No contacts or header not found within timeout: " + e.getMessage());
+        }
         return driver.findElements(By.xpath("//div[@class='contact-item_card__2SOIM']"));
     }
 
