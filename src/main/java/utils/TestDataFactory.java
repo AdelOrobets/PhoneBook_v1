@@ -112,7 +112,7 @@ public class TestDataFactory {
     }
 
     public static ContactLombok invalidEmailFormat() {
-        return baseContact().email("invalidEmailForma@").build();
+        return baseContact().email("invalidEmailFormat@").build();
     }
 
     public static ContactLombok invalidPhoneFormat() {

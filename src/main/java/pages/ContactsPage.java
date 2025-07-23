@@ -118,4 +118,19 @@ public class ContactsPage extends BasePage {
     public boolean isContactAbsentByName(String name, List<WebElement> contacts) {
         return !isContactPresentInList(name, contacts);
     }
+
+    public int countContactsByPhone(String phone) {
+        int count = 0;
+        for (WebElement card : contactsCards) {
+            try {
+                WebElement phoneElement = card.findElement(By.tagName("h3"));
+                if (phoneElement.getText().equals(phone)) {
+                    count++;
+                }
+            } catch (NoSuchElementException e) {
+                logger.warn("Phone element not found in contact card: {}", e.getMessage());
+            }
+        }
+        return count;
+    }
 }

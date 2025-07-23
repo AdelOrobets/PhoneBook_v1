@@ -62,6 +62,31 @@ public class AddNewContactsTests extends ApplicationManager {
 
     // Negative tests
     @Test(groups = "regression")
+    public void testAddContact_DuplicateContact() {
+        ContactLombok contact = TestDataFactory.validContact();
+        openAddPage();
+        addPage.fillContactForm(contact);
+
+        contactsPage = new ContactsPage(driver);
+        int countWithSamePhone = contactsPage.countContactsByPhone(contact.getPhone());
+        logger.info("Contacts with same phone after first add: {}", countWithSamePhone);
+        Assert.assertTrue(countWithSamePhone >= 1, "Contact not added the first time");
+
+        openAddPage();
+        addPage.fillContactForm(contact);
+        String alertText = addPage.closeAlertReturnText();
+        Assert.assertTrue(alertText.contains("Contact already exists") || alertText.contains("already"),
+                "Expected alert for duplicate contact");
+
+        contactsPage = new ContactsPage(driver);
+        int countWithSamePhoneAfter = contactsPage.countContactsByPhone(contact.getPhone());
+        logger.info("Contacts with same phone after duplicate add: {}", countWithSamePhoneAfter);
+        Assert.assertEquals(countWithSamePhoneAfter, countWithSamePhone,
+                "Duplicate contact was added unexpectedly");
+    }
+
+
+    @Test(groups = "regression")
     public void testAddNewContactS_AllFieldsEmpty(){
         ContactLombok contact = TestDataFactory.allFieldsEmpty();
         contactsPage = new ContactsPage(driver);

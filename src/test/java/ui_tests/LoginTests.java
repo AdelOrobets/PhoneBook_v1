@@ -7,6 +7,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.ContactsPage;
 import utils.PropertiesReader;
+import utils.RandomUtils;
 import utils.TestDataFactory;
 import utils.TestNGListener;
 
@@ -83,10 +84,9 @@ public class LoginTests extends ApplicationManager {
     @Test(groups = "regression")
     public void loginNegativeTest_wrongPassword() {
         UserLombok validUser = userRegistration();
-        String validEmail = validUser.getUsername();
-        String wrongPassword = "WrongPass1$";
+        String wrongPassword = RandomUtils.generatePassword(8);
         openLoginPage();
-        loginPage.fillCredentials(validEmail, wrongPassword);
+        loginPage.fillCredentials(validUser.getUsername(), wrongPassword);
         loginPage.clickLoginButton();
         closeAlertAndAssertFailure();
     }
