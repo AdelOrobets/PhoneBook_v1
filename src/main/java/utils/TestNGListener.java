@@ -12,42 +12,36 @@ public class TestNGListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        ITestListener.super.onTestStart(result);
-        logger.info("[Test START]" + result.getMethod().getMethodName());
+        logger.info("[TEST START] {}", result.getMethod().getMethodName());
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        ITestListener.super.onTestSuccess(result);
-        logger.info("[Test PASSED]" + result.getMethod().getMethodName());
+        logger.info("[TEST PASSED] {}", result.getMethod().getMethodName());
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        ITestListener.super.onTestFailure(result);
-        logger.info("Test FAILED]" + result.getMethod().getMethodName(), result.getThrowable().getMessage());
+        logger.error("[TEST FAILED] {}", result.getMethod().getMethodName(), result.getThrowable());
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        ITestListener.super.onTestSkipped(result);
-        logger.info("[SKIPPED]" + result.getMethod().getMethodName());
+        logger.warn("[TEST SKIPPED] {}", result.getMethod().getMethodName());
     }
 
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-        ITestListener.super.onTestFailedButWithinSuccessPercentage(result);
+        logger.warn("[TEST FAILED WITHIN SUCCESS PERCENTAGE] {}", result.getMethod().getMethodName());
     }
 
     @Override
     public void onStart(ITestContext context) {
-        ITestListener.super.onStart(context);
-        logger.info("[SUITE START]" + context.getName());
+        logger.info("[SUITE START] {}", context.getName());
     }
 
     @Override
     public void onFinish(ITestContext context) {
-        ITestListener.super.onFinish(context);
-        logger.info("[SUITE END]" + context.getName());
+        logger.info("[SUITE END] {}", context.getName());
     }
 }
